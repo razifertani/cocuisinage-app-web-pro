@@ -112,4 +112,38 @@ class AuthController extends Controller
         }
     }
 
+    public function user()
+    {
+        try {
+            return response()->json([
+                'error' => false,
+                'data' => request()->user(),
+            ]);
+
+        } catch (\Throwable$th) {
+            return response()->json([
+                'error' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function logout()
+    {
+        try {
+
+            auth()->user()->tokens()->delete();
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Logged out',
+            ]);
+
+        } catch (\Throwable$th) {
+            return response()->json([
+                'error' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }
