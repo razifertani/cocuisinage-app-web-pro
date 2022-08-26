@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
-// use Laratrust\Traits\LaratrustUserTrait;
+use Spatie\Permission\Traits\HasRoles;
 
 class Professional extends Authenticatable
 {
 
+    use HasRoles;
     use HasApiTokens;
     use Notifiable;
-    // use LaratrustUserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -58,26 +57,4 @@ class Professional extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function parent()
-    {
-        return $this->belongsTo(Company::class, 'company_id');
-    }
-
-    public function recipes()
-    {
-        return $this->hasMany(Recipe::class, 'pro_id');
-
-    }
-
-    public function likesRecipe()
-    {
-        return $this->belongsToMany(Recipe::class, 'pro_rec_likes')->withTimestamps();
-
-    }
-
-    public function menus()
-    {
-        return $this->hasMany(Menu::class);
-    }
 }

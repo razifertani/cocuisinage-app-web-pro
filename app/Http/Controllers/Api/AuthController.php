@@ -6,10 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Professional;
 use Auth;
 use Hash;
+use Spatie\Permission\Models\Role;
 use Validator;
 
 class AuthController extends Controller
 {
+
+    public function test()
+    {
+        $role = Role::create(['name' => 'Restaurateur']);
+        return $role;
+    }
     public function register()
     {
         try {
@@ -76,6 +83,7 @@ class AuthController extends Controller
         try {
             $validateUser = Validator::make(request()->all(),
                 [
+
                     'email' => 'required|email',
                     'password' => 'required',
                 ]);
@@ -95,7 +103,9 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            $professional = Professional::where('email', request('email'))->first();
+            $professional = Professional::
+                with('roles')
+                ->where('email', request('email'))->first();
 
             return response()->json([
                 'error' => false,
@@ -116,7 +126,10 @@ class AuthController extends Controller
         try {
 
             $user = request()->user();
-            $user->load('parent', 'likesRecipe');
+            $user->load('roles');
+
+            $role = Role::where('name', 'Restaurateur')->first();
+            // $user->syncRoles([$role]);
 
             return response()->json([
                 'error' => false,
