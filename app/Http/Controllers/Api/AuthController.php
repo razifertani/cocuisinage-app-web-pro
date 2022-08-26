@@ -36,7 +36,7 @@ class AuthController extends Controller
 
             if ($validateUser->fails()) {
                 return response()->json([
-                    'error' => false,
+                    'error' => true,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors(),
                 ], 401);
@@ -59,14 +59,13 @@ class AuthController extends Controller
             ]);
 
             return response()->json([
-                'error' => true,
+                'error' => false,
                 'message' => 'Professional Created Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken,
             ], 200);
 
         } catch (\Throwable$th) {
             return response()->json([
-                'error' => false,
+                'error' => true,
                 'message' => $th->getMessage(),
             ], 500);
         }
@@ -83,7 +82,7 @@ class AuthController extends Controller
 
             if ($validateUser->fails()) {
                 return response()->json([
-                    'error' => false,
+                    'error' => true,
                     'message' => 'validation error',
                     'errors' => $validateUser->errors(),
                 ], 401);
@@ -91,22 +90,22 @@ class AuthController extends Controller
 
             if (!Auth::attempt(request()->only(['email', 'password']))) {
                 return response()->json([
-                    'error' => false,
+                    'error' => true,
                     'message' => 'Email & Password does not match with our record.',
-                ], 401);
+                ], 200);
             }
 
-            $user = Professional::where('email', request('email'))->first();
+            $professional = Professional::where('email', request('email'))->first();
 
             return response()->json([
-                'error' => true,
-                'message' => 'Professional Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken,
+                'error' => false,
+                'token' => $professional->createToken("API TOKEN")->plainTextToken,
+                'data' => $professional,
             ], 200);
 
         } catch (\Throwable$th) {
             return response()->json([
-                'error' => false,
+                'error' => true,
                 'message' => $th->getMessage(),
             ], 500);
         }
@@ -115,14 +114,18 @@ class AuthController extends Controller
     public function user()
     {
         try {
+
+            $user = request()->user();
+            $user->load('parent', 'likesRecipe');
+
             return response()->json([
                 'error' => false,
-                'data' => request()->user(),
-            ]);
+                'data' => $user,
+            ], 200);
 
         } catch (\Throwable$th) {
             return response()->json([
-                'error' => false,
+                'error' => true,
                 'message' => $th->getMessage(),
             ], 500);
         }
@@ -137,11 +140,11 @@ class AuthController extends Controller
             return response()->json([
                 'error' => false,
                 'message' => 'Logged out',
-            ]);
+            ], 200);
 
         } catch (\Throwable$th) {
             return response()->json([
-                'error' => false,
+                'error' => true,
                 'message' => $th->getMessage(),
             ], 500);
         }

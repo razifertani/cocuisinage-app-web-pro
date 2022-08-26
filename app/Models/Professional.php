@@ -64,10 +64,6 @@ class Professional extends Authenticatable
         return $this->belongsTo(Company::class, 'company_id');
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class)->withPivot('type');
-    }
     public function recipes()
     {
         return $this->hasMany(Recipe::class, 'pro_id');
