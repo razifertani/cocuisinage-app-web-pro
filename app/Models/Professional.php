@@ -5,21 +5,15 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class Professional extends Authenticatable
 {
-
     use HasRoles;
     use HasApiTokens;
     use Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $table = 'professional';
 
     protected $fillable = [
         'first_name',
@@ -57,4 +51,29 @@ class Professional extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'professional_roles_in_establishment')->withPivot('establishment_id');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'professional_permissions_in_establishment')->withPivot('establishment_id');
+    }
+
+    public function establishments_roles()
+    {
+        return $this->belongsToMany(Establishment::class, 'professional_roles_in_establishment')->withPivot('role_id');
+    }
+
+    public function establishments_permissions()
+    {
+        return $this->belongsToMany(Establishment::class, 'professional_permissions_in_establishment')->withPivot('permission_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }
