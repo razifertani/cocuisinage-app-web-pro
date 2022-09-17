@@ -52,7 +52,7 @@ return [
          * basic default value but you may easily change it to any table you like.
          */
 
-        'model_has_permissions' => 'professional_has_permissions',
+        'model_has_permissions' => 'professional_permissions_in_establishment',
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -60,7 +60,7 @@ return [
          * basic default value but you may easily change it to any table you like.
          */
 
-        'model_has_roles' => 'professional_has_roles',
+        'model_has_roles' => 'professional_roles_in_establishment',
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -86,7 +86,7 @@ return [
          * that case, name this `model_uuid`.
          */
 
-        'model_morph_key' => 'model_id',
+        'model_morph_key' => 'professional_id',
 
         /*
          * Change this if you want to use the teams feature and your related model's

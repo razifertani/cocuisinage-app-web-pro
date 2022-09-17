@@ -52,6 +52,11 @@ class Professional extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'professional_roles_in_establishment')->withPivot('establishment_id');
@@ -72,8 +77,18 @@ class Professional extends Authenticatable
         return $this->belongsToMany(Establishment::class, 'professional_permissions_in_establishment')->withPivot('permission_id');
     }
 
-    public function company()
+    public function target_plannings()
     {
-        return $this->belongsTo(Company::class);
+        return $this->hasMany(Planning::class)->where('is_boss', true);
+    }
+
+    public function worked_plannings()
+    {
+        return $this->hasMany(Planning::class)->where('is_boss', '=', false);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }
