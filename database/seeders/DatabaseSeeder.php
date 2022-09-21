@@ -181,20 +181,16 @@ class DatabaseSeeder extends Seeder
             $planning1 = Planning::create([
                 'professional_id' => $professional1->id,
                 'establishment_id' => $establishment1->id,
-                'day' => '2022-09-13',
-                'start_at' => '09:00',
-                'stop_at' => '13:00',
-                'is_boss' => true,
-                'day_of_week' => null,
+                'day' => '2022-09-17',
+                'should_start_at' => '09:00',
+                'should_finish_at' => '13:00',
             ]);
             $planning2 = Planning::create([
                 'professional_id' => $professional2->id,
                 'establishment_id' => $establishment1->id,
-                'day' => '2022-09-13',
-                'start_at' => '09:00',
-                'stop_at' => '13:00',
-                'is_boss' => true,
-                'day_of_week' => null,
+                'day' => '2022-09-17',
+                'should_start_at' => '14:00',
+                'should_finish_at' => '15:00',
             ]);
 
             // Tasks

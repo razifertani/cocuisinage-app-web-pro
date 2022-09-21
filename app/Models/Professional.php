@@ -77,14 +77,9 @@ class Professional extends Authenticatable
         return $this->belongsToMany(Establishment::class, 'professional_permissions_in_establishment')->withPivot('permission_id');
     }
 
-    public function target_plannings()
+    public function plannings()
     {
-        return $this->hasMany(Planning::class)->where('is_boss', true);
-    }
-
-    public function worked_plannings()
-    {
-        return $this->hasMany(Planning::class)->where('is_boss', '=', false);
+        return $this->hasMany(Planning::class)->orderBy('should_start_at');
     }
 
     public function tasks()

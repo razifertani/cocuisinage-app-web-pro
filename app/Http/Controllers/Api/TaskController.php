@@ -3,31 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Professional;
 use App\Models\Task;
 use Spatie\Permission\Models\Permission;
-use Validator;
+
+// use Mail;
+// use App\Mail\SendToOwnerDeniedTaskMail;
 
 class TaskController extends Controller
 {
     public function store()
     {
-
         try {
-            $validator = Validator::make(request()->all(),
-                [
-                    'professional_id' => 'required',
-                    'establishment_id' => 'required',
-                    'planning_id' => 'required',
-                    'name' => 'required',
-                    'status' => 'required',
-                ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'error' => true,
-                    'message' => $validator->errors()->first(),
-                ], 401);
-            }
+            request()->validate([
+                'professional_id' => 'required',
+                'establishment_id' => 'required',
+                'planning_id' => 'required',
+                'name' => 'required',
+                'status' => 'required',
+            ]);
 
             if (!auth()->user()->can(Permission::find(4)->name)) {
                 return response()->json([
@@ -64,17 +58,15 @@ class TaskController extends Controller
     {
 
         try {
-            $validator = Validator::make(request()->all(),
-                [
-                    'professional_id' => 'required',
-                    'establishment_id' => 'required',
-                ]);
+            request()->validate([
+                'professional_id' => 'required',
+                'establishment_id' => 'required',
+            ]);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'error' => true,
-                    'message' => $validator->errors()->first(),
-                ], 401);
+            $professional = Professional::findOrFail(request('professional_id'));
+
+            if (request('status') == -1) {
+                // Mail::to($professional->email)->send(new SendToOwnerDeniedTaskMail("Message"));
             }
 
             Task::where('id', $id)

@@ -23,11 +23,11 @@ return new class extends Migration
             $table->foreign('establishment_id')->references('id')->on('establishments')->onUpdate('cascade')->onDelete('cascade');
 
             $table->date('day');
-            $table->time('start_at');
-            $table->time('stop_at')->nullable();
+            $table->time('should_start_at');
+            $table->time('should_finish_at');
 
-            $table->boolean('is_boss')->default(false);
-            $table->integer('day_of_week')->nullable();
+            $table->time('started_at')->nullable();
+            $table->time('finished_at')->nullable();
 
             $table->timestamps();
         });

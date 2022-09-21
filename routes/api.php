@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CollegueController;
+use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\PlanningController;
 use App\Http\Controllers\Api\ProfessionalController;
 use App\Http\Controllers\Api\TaskController;
@@ -25,6 +26,12 @@ Route::get('config/mobile', [AuthController::class, 'config_mobile']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('register', [AuthController::class, 'register']);
+
+Route::post('password/email', [ForgotPasswordController::class, 'send_reset_password_email']);
+
+Route::post('password/verify_code', [ForgotPasswordController::class, 'verify_code']);
+
+Route::post('password/reset', [ForgotPasswordController::class, 'reset_password']);
 
 Route::post('/collegue/accept_invitation/{url_token}', [CollegueController::class, 'accept_collegue_invitation']);
 
@@ -50,7 +57,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
      * Planning related routes
      */
 
-    Route::post('/planning/add_or_update', [PlanningController::class, 'add_or_update']);
+    Route::post('/plannings', [PlanningController::class, 'store_plannings']);
+
+    Route::post('/planning/{id}/update_time', [PlanningController::class, 'update_time']);
 
     /*
      * Task related routes

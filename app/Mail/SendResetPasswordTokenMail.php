@@ -6,20 +6,20 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendInvitationLinkMail extends Mailable
+class SendResetPasswordTokenMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $url;
+    public $token;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($url)
+    public function __construct($token)
     {
-        $this->url = $url;
+        $this->token = $token;
     }
 
     /**
@@ -30,11 +30,10 @@ class SendInvitationLinkMail extends Mailable
     public function build()
     {
         return $this->from(config('mail.from.address'), config('mail.from.name'))
-            ->subject('SendInvitationLinkMail')
-            ->view('emails.invitation_email')
+            ->subject('SendResetPasswordTokenMail')
+            ->view('emails.reset_password_email')
             ->with([
-                'url' => $this->url,
+                'token' => $this->token,
             ]);
-
     }
 }
