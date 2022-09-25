@@ -29,7 +29,7 @@ return new class extends Migration
             $table->integer('status');
 
             $table->string('comment')->nullable();
-            $table->string('image_link')->nullable();
+            $table->string('image')->nullable();
 
             $table->timestamps();
         });

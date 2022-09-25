@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\PlanningController;
 use App\Http\Controllers\Api\ProfessionalController;
 use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +37,8 @@ Route::post('password/reset', [ForgotPasswordController::class, 'reset_password'
 Route::post('/collegue/accept_invitation/{url_token}', [CollegueController::class, 'accept_collegue_invitation']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+
+    Route::post('image-upload', [Controller::class, 'imageUploadPost']);
 
     /*
      * Authenticated related routes
@@ -76,7 +79,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 });
 
-Route::any('/{any}', function ($any) {
+Route::any('/{any}', function () {
     return response()->json([
         'error' => true,
         'message' => 'Lien invalide !',

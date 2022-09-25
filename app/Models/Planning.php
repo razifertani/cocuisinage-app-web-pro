@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\PlanningCannotBeAdded;
+use App\Models\Planning;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,7 +40,7 @@ class Planning extends Model
         return $this->hasMany(Task::class);
     }
 
-    public function create_or_update()
+    public function create_or_update_once()
     {
         if ($this->check_if_planning_can_be_added($this->day)) {
 
@@ -65,6 +66,46 @@ class Planning extends Model
             return true;
         } else {
             return new PlanningCannotBeAdded();
+        }
+    }
+
+    public function create_or_update_recursivly()
+    {
+        if ($this->monthly == 1) {
+
+            $current_date = Carbon::parse($this->day);
+            $one_year_later = Carbon::now()->addYear(1);
+
+            while ($current_date->isBefore($one_year_later)) {
+                $current_date->addDays(7);
+
+                if ($this->id == 0) {
+                    if ($this->check_if_planning_can_be_added($current_date)) {
+
+                        Planning::create([
+                            'professional_id' => $this->professional_id,
+                            'establishment_id' => $this->establishment_id,
+                            'day' => $current_date,
+                            'should_start_at' => $this->should_start_at,
+                            'should_finish_at' => $this->should_finish_at,
+                        ]);
+
+                    } else {
+                        return new PlanningCannotBeAdded();
+                    }
+                } else {
+
+                    Planning::where([
+                        ['professional_id', $this->professional_id],
+                        ['establishment_id', $this->establishment_id],
+                        ['day', $current_date],
+                        ['should_start_at', $this->should_start_at],
+                    ])->update([
+                        'should_start_at' => $this->should_start_at,
+                        'should_finish_at' => $this->should_finish_at,
+                    ]);
+                }
+            }
         }
     }
 

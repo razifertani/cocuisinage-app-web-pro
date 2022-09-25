@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\PlanningCannotBeAdded;
 use App\Http\Controllers\Controller;
 use App\Models\Planning;
-use Carbon\Carbon;
 use DB;
 use Validator;
 
@@ -42,6 +41,7 @@ class PlanningController extends Controller
 
                 $response = static::store_or_update($planning);
 
+                logger($response);
                 if ($response instanceof PlanningCannotBeAdded) {
                     throw new PlanningCannotBeAdded();
                 }
@@ -75,47 +75,11 @@ class PlanningController extends Controller
     {
         try {
 
-            $result = $planning->create_or_update();
+            $result1 = $planning->create_or_update_once();
+            $result2 = $planning->create_or_update_recursivly();
 
-            if ($result instanceof PlanningCannotBeAdded) {
+            if ($result1 instanceof PlanningCannotBeAdded || $result2 instanceof PlanningCannotBeAdded) {
                 return new PlanningCannotBeAdded();
-            }
-
-            if ($planning->monthly == 1) {
-
-                $current_date = Carbon::parse($planning->day);
-                $one_year_later = Carbon::now()->addYear(1);
-
-                while ($current_date->isBefore($one_year_later)) {
-                    $current_date->addDays(7);
-
-                    if ($planning->id == 0) {
-                        if ($planning->check_if_planning_can_be_added($current_date)) {
-
-                            Planning::create([
-                                'professional_id' => $planning->professional_id,
-                                'establishment_id' => $planning->establishment_id,
-                                'day' => $current_date,
-                                'should_start_at' => $planning->should_start_at,
-                                'should_finish_at' => $planning->should_finish_at,
-                            ]);
-
-                        } else {
-                            return new PlanningCannotBeAdded();
-                        }
-                    } else {
-
-                        Planning::where([
-                            ['professional_id', $planning->professional_id],
-                            ['establishment_id', $planning->establishment_id],
-                            ['day', $current_date],
-                            ['should_start_at', $planning->should_start_at],
-                        ])->update([
-                            'should_start_at' => $planning->should_start_at,
-                            'should_finish_at' => $planning->should_finish_at,
-                        ]);
-                    }
-                }
             }
 
             return true;

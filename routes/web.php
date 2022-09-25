@@ -13,6 +13,9 @@
 |
  */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::any('/{any}', function () {
+    return response()->json([
+        'error' => true,
+        'message' => 'Web',
+    ], 404);
+})->where('any', '.*');

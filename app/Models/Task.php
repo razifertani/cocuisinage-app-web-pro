@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Storage;
 
 class Task extends Model
 {
@@ -14,8 +15,25 @@ class Task extends Model
         "name",
         "status",
         "comment",
-        "image_link",
+        "image",
     ];
+
+    protected $appends = [
+        'image_url',
+    ];
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->image != null) {
+            $link = Storage::cloud()->temporaryUrl(
+                'professionals/' . auth()->user()->id . '/' . $this->image,
+                now()->addMinutes(30),
+            );
+            return $link;
+        } else {
+            return null;
+        }
+    }
 
     public function professional()
     {

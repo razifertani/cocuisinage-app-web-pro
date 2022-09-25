@@ -201,7 +201,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Préparer les tomates',
                 'status' => 0,
                 'comment' => null,
-                'image_link' => null,
+                'image' => null,
             ]);
 
         }

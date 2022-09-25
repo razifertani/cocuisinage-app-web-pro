@@ -37,7 +37,7 @@ class TaskController extends Controller
                 'name' => request('name'),
                 'status' => request('status'),
                 'comment' => request('comment'),
-                'image_link' => request('image_link'),
+                // 'image' => request('image'),
             ]);
 
             return response()->json([
@@ -63,18 +63,21 @@ class TaskController extends Controller
                 'establishment_id' => 'required',
             ]);
 
-            $professional = Professional::findOrFail(request('professional_id'));
-
             if (request('status') == -1) {
+                $professional = Professional::findOrFail(request('professional_id'));
                 // Mail::to($professional->email)->send(new SendToOwnerDeniedTaskMail("Message"));
             }
 
-            Task::where('id', $id)
-                ->update([
-                    'status' => request('status'),
-                    'comment' => request('comment'),
-                    'image_link' => request('image_link'),
-                ]);
+            $task = Task::findOrFail($id);
+
+            $task->status = request('status') ?? $task->status;
+            $task->comment = request('comment') ?? $task->comment;
+
+            if (request()->hasFile('image')) {
+                $task->image = $this->upload_image();
+            }
+
+            $task->save();
 
             return response()->json([
                 'error' => false,
