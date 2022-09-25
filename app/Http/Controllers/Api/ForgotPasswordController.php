@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendResetPasswordTokenMail;
 use App\Models\Professional;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
-
-// use Mail;
-// use App\Mail\SendResetPasswordTokenMail;
+use Mail;
 
 class ForgotPasswordController extends Controller
 {
@@ -27,7 +26,7 @@ class ForgotPasswordController extends Controller
                 'token' => $token,
             ]);
 
-            // Mail::to(request('email'))->send(new SendResetPasswordTokenMail($token));
+            Mail::to(request('email'))->send(new SendResetPasswordTokenMail($token));
 
             return response()->json([
                 'error' => false,

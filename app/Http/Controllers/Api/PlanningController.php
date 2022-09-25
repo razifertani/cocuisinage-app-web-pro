@@ -15,18 +15,15 @@ class PlanningController extends Controller
         try {
             $plannings = json_decode(request('plannings'), true);
 
-            $validator = Validator::make($plannings,
-                [
-                    '*.professional_id' => 'required',
-                    '*.establishment_id' => 'required',
-                    '*.day' => 'required|date_format:Y-m-d',
-                    '*.should_start_at' => 'required|date_format:H:i',
-                    '*.should_finish_at' => 'required|date_format:H:i|after_or_equal:*.should_start_at',
-                    '*.monthly' => 'required|boolean',
-                ], [
-                    '*.should_finish_at.after_or_equal' => 'Vérifier les horaires que vous avez entré !',
-                ]
-            );
+            $validator = Validator::make($plannings, [
+                '*.professional_id' => 'required',
+                '*.establishment_id' => 'required',
+                '*.day' => 'required|date_format:Y-m-d',
+                '*.should_start_at' => 'required|date_format:H:i',
+                '*.should_finish_at' => 'required|date_format:H:i|after_or_equal:*.should_start_at',
+            ], [
+                '*.should_finish_at.after_or_equal' => 'Vérifier les horaires que vous avez entré !',
+            ]);
             if ($validator->fails()) {
                 return response()->json([
                     'error' => true,
@@ -39,9 +36,12 @@ class PlanningController extends Controller
             foreach ($plannings as $planning) {
                 $planning = new Planning($planning);
 
-                $response = static::store_or_update($planning);
+                if (request('monthly') == "1") {
+                    $response = $planning->create_or_update_recursivly();
+                } else {
+                    $response = $planning->create_or_update_once();
+                }
 
-                logger($response);
                 if ($response instanceof PlanningCannotBeAdded) {
                     throw new PlanningCannotBeAdded();
                 }
@@ -63,28 +63,6 @@ class PlanningController extends Controller
 
         } catch (\Throwable$th) {
             DB::rollback();
-            report($th);
-            return response()->json([
-                'error' => true,
-                'message' => $th->getMessage(),
-            ], 500);
-        }
-    }
-
-    public function store_or_update(Planning $planning)
-    {
-        try {
-
-            $result1 = $planning->create_or_update_once();
-            $result2 = $planning->create_or_update_recursivly();
-
-            if ($result1 instanceof PlanningCannotBeAdded || $result2 instanceof PlanningCannotBeAdded) {
-                return new PlanningCannotBeAdded();
-            }
-
-            return true;
-
-        } catch (\Throwable$th) {
             report($th);
             return response()->json([
                 'error' => true,

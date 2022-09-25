@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendInvitationLinkMail;
 use App\Models\Invitation;
 use App\Models\Professional;
 use Carbon\Carbon;
 use Hash;
+use Mail;
 use Spatie\Permission\Models\Role;
-
-// use App\Mail\SendInvitationLinkMail;
-// use Mail;
 
 class CollegueController extends Controller
 {
@@ -52,7 +51,7 @@ class CollegueController extends Controller
             );
 
             $url = url('/api/collegue/accept_invitation') . '/' . $url_token;
-            // Mail::to(request('email'))->send(new SendInvitationLinkMail($url));
+            Mail::to(request('email'))->send(new SendInvitationLinkMail($url));
 
             return response()->json([
                 'error' => false,
