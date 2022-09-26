@@ -118,7 +118,6 @@ class DatabaseSeeder extends Seeder
                     'email' => 'razifertani1@gmail.com',
                     'password' => Hash::make('123456'),
                     'company_id' => $company1->id,
-                    'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
                 ]
             );
 
@@ -132,7 +131,6 @@ class DatabaseSeeder extends Seeder
                     'email' => 'co-cuisinage@outlook.fr',
                     'password' => Hash::make('123456'),
                     'company_id' => $company1->id,
-                    'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg',
                 ]
             );
 
@@ -146,7 +144,6 @@ class DatabaseSeeder extends Seeder
                     'email' => 'foodeatup@outlook.fr',
                     'password' => Hash::make('123456'),
                     'company_id' => $company1->id,
-                    'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg',
                 ]
             );
 
@@ -160,7 +157,6 @@ class DatabaseSeeder extends Seeder
                     'email' => 'fares.khiari@esen.tn',
                     'password' => Hash::make('123456'),
                     'company_id' => $company1->id,
-                    'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg',
                 ]
             );
 
@@ -174,7 +170,6 @@ class DatabaseSeeder extends Seeder
                     'email' => 'HamedChamkhii@gmail.com',
                     'password' => Hash::make('123456'),
                     'company_id' => $company1->id,
-                    'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg',
                 ]
             );
 

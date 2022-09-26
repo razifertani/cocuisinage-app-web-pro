@@ -25,7 +25,7 @@ return new class extends Migration
                 $table->rememberToken();
 
                 $table->string('api_token')->nullable();
-                $table->string('profile_photo_path')->default('https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png')->nullable();
+                $table->string('profile_photo_path')->nullable();
                 $table->string('phone_number')->nullable();
                 $table->string('address_line_one')->nullable();
                 $table->string('address_line_two')->nullable();

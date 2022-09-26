@@ -16,7 +16,7 @@ class ForgotPasswordController extends Controller
     {
         try {
             $credentials = request()->validate([
-                'email' => 'required|email|exists:professionals',
+                'email' => 'required|email|exists:professional',
             ]);
 
             $token = rand(1000, 9999);
@@ -46,7 +46,7 @@ class ForgotPasswordController extends Controller
     {
         try {
             request()->validate([
-                'email' => 'required|email|exists:professionals',
+                'email' => 'required|email|exists:professional',
                 'token' => 'required',
             ]);
 
@@ -80,7 +80,7 @@ class ForgotPasswordController extends Controller
     {
         try {
             request()->validate([
-                'email' => 'required|email|exists:professionals',
+                'email' => 'required|email|exists:professional',
                 'token' => 'required',
                 'password' => 'required|confirmed',
             ]);

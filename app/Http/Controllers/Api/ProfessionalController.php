@@ -51,7 +51,7 @@ class ProfessionalController extends Controller
                 'establishment_id' => 'required',
                 'first_name' => 'required',
                 'last_name' => 'required',
-                'email' => ['required', Rule::unique('professionals')->ignore($user)],
+                'email' => ['required', Rule::unique('professional')->ignore($user)],
                 'phone_number' => 'sometimes',
             ]);
 

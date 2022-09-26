@@ -19,7 +19,7 @@ class CollegueController extends Controller
             request()->validate([
                 'company_id' => 'required',
                 'establishment_id' => 'required',
-                'email' => 'required|unique:professionals|unique:invitations',
+                'email' => 'required|unique:professional|unique:invitations',
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'phone_number' => 'required',
