@@ -16,6 +16,8 @@ class Professional extends Authenticatable
     use HasApiTokens;
     use Notifiable;
 
+    protected $table = "professional";
+
     protected $fillable = [
         'first_name',
         'last_name',
