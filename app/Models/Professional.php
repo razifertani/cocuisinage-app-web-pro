@@ -8,6 +8,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
+use Storage;
 
 class Professional extends Authenticatable
 {
@@ -51,6 +52,23 @@ class Professional extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = [
+        'image_url',
+    ];
+
+    public function getImageUrlAttribute()
+    {
+        if ($this->profile_photo_path != null) {
+            $link = Storage::cloud()->temporaryUrl(
+                'professionals/' . auth()->user()->id . '/' . $this->profile_photo_path,
+                now()->addMinutes(30),
+            );
+            return $link;
+        } else {
+            return "https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg";
+        }
+    }
 
     public function company()
     {

@@ -68,6 +68,8 @@ class CollegueController extends Controller
 
     public function accept_collegue_invitation($url_token)
     {
+        logger($url_token);
+
         try {
             request()->validate([
                 'password' => 'required',

@@ -7,7 +7,7 @@ use App\Models\Company;
 use App\Models\Establishment;
 use App\Models\Planning;
 use App\Models\Professional;
-use App\Models\Task;
+// use App\Models\Task;
 use Hash;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -78,11 +78,10 @@ class DatabaseSeeder extends Seeder
             $permission9 = Permission::firstOrCreate(['name' => 'Manage transfers and transactions']);
             $permission10 = Permission::firstOrCreate(['name' => 'Add a recipe']);
             $permission11 = Permission::firstOrCreate(['name' => 'Favorite recipes']);
-            $permission12 = Permission::firstOrCreate(['name' => 'Change store']);
 
             $role1->syncPermissions([
                 $permission1, $permission2, $permission3, $permission4, $permission5, $permission6,
-                $permission7, $permission8, $permission9, $permission10, $permission11, $permission12,
+                $permission7, $permission8, $permission9, $permission10, $permission11,
             ]);
 
             $role2->syncPermissions([
@@ -125,12 +124,54 @@ class DatabaseSeeder extends Seeder
 
             $professional2 = Professional::firstOrCreate(
                 [
-                    'email' => 'joe@gmail.com',
+                    'email' => 'co-cuisinage@outlook.fr',
                 ],
                 [
-                    'first_name' => 'Joe',
-                    'last_name' => 'Doe',
-                    'email' => 'joe@gmail.com',
+                    'first_name' => 'Co',
+                    'last_name' => 'Cuisinage',
+                    'email' => 'co-cuisinage@outlook.fr',
+                    'password' => Hash::make('123456'),
+                    'company_id' => $company1->id,
+                    'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg',
+                ]
+            );
+
+            $professional3 = Professional::firstOrCreate(
+                [
+                    'email' => 'foodeatup@outlook.fr',
+                ],
+                [
+                    'first_name' => 'Food',
+                    'last_name' => 'Eat Up',
+                    'email' => 'foodeatup@outlook.fr',
+                    'password' => Hash::make('123456'),
+                    'company_id' => $company1->id,
+                    'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg',
+                ]
+            );
+
+            $professional4 = Professional::firstOrCreate(
+                [
+                    'email' => 'fares.khiari@esen.tn',
+                ],
+                [
+                    'first_name' => 'Fares',
+                    'last_name' => 'Khiari',
+                    'email' => 'fares.khiari@esen.tn',
+                    'password' => Hash::make('123456'),
+                    'company_id' => $company1->id,
+                    'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg',
+                ]
+            );
+
+            $professional5 = Professional::firstOrCreate(
+                [
+                    'email' => 'HamedChamkhii@gmail.com',
+                ],
+                [
+                    'first_name' => 'Hamed',
+                    'last_name' => 'Chamkhii',
+                    'email' => 'HamedChamkhii@gmail.com',
                     'password' => Hash::make('123456'),
                     'company_id' => $company1->id,
                     'profile_photo_path' => 'https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg',
@@ -151,58 +192,84 @@ class DatabaseSeeder extends Seeder
                 ],
             );
 
-            $professional1->establishments_roles()->attach(
+            $professional2->establishments_roles()->attach(
                 $establishment2->id,
                 [
                     'role_id' => $role1->id,
                 ],
             );
-            $professional1->permissions()->attach(
+            $professional2->permissions()->attach(
                 Role::findOrFail($role1->id)->permissions,
                 [
                     'establishment_id' => $establishment2->id,
                 ],
             );
 
-            $professional2->establishments_roles()->attach(
-                $establishment1->id,
+            $professional3->establishments_roles()->attach(
+                $establishment3->id,
                 [
-                    'role_id' => $role2->id,
+                    'role_id' => $role1->id,
                 ],
             );
-            $professional2->permissions()->attach(
-                Role::findOrFail($role2->id)->permissions,
+            $professional3->permissions()->attach(
+                Role::findOrFail($role1->id)->permissions,
                 [
-                    'establishment_id' => $establishment1->id,
+                    'establishment_id' => $establishment3->id,
                 ],
             );
 
-            // Plannings
+            $professional4->establishments_roles()->attach(
+                $establishment4->id,
+                [
+                    'role_id' => $role1->id,
+                ],
+            );
+            $professional4->permissions()->attach(
+                Role::findOrFail($role1->id)->permissions,
+                [
+                    'establishment_id' => $establishment4->id,
+                ],
+            );
+
+            $professional5->establishments_roles()->attach(
+                $establishment5->id,
+                [
+                    'role_id' => $role1->id,
+                ],
+            );
+            $professional5->permissions()->attach(
+                Role::findOrFail($role1->id)->permissions,
+                [
+                    'establishment_id' => $establishment5->id,
+                ],
+            );
+
+            // // Plannings
             $planning1 = Planning::create([
                 'professional_id' => $professional1->id,
                 'establishment_id' => $establishment1->id,
-                'day' => '2022-09-17',
+                'day' => '2022-09-27',
                 'should_start_at' => '09:00',
                 'should_finish_at' => '13:00',
             ]);
             $planning2 = Planning::create([
                 'professional_id' => $professional2->id,
                 'establishment_id' => $establishment1->id,
-                'day' => '2022-09-17',
+                'day' => '2022-09-27',
                 'should_start_at' => '14:00',
                 'should_finish_at' => '15:00',
             ]);
 
-            // Tasks
-            $task1 = Task::create([
-                'professional_id' => $professional1->id,
-                'establishment_id' => $establishment1->id,
-                'planning_id' => $planning1->id,
-                'name' => 'Préparer les tomates',
-                'status' => 0,
-                'comment' => null,
-                'image' => null,
-            ]);
+            // // Tasks
+            // $task1 = Task::create([
+            //     'professional_id' => $professional1->id,
+            //     'establishment_id' => $establishment1->id,
+            //     'planning_id' => $planning1->id,
+            //     'name' => 'Préparer les tomates',
+            //     'status' => 0,
+            //     'comment' => null,
+            //     'image' => null,
+            // ]);
 
         }
 

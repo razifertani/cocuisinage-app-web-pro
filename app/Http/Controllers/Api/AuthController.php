@@ -12,7 +12,6 @@ class AuthController extends Controller
 {
     public function test()
     {
-
     }
 
     public function config_mobile()
@@ -72,7 +71,6 @@ class AuthController extends Controller
     public function logout()
     {
         try {
-
             auth()->user()->tokens()->delete();
 
             return response()->json([
