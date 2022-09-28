@@ -19,7 +19,6 @@ return new class extends Migration
 
                 $table->string('name');
                 $table->string('email')->nullable();
-                $table->string('email')->nullable();
                 $table->string('phone_number')->nullable();
                 $table->string('rib')->nullable();
                 $table->string('siret')->nullable();

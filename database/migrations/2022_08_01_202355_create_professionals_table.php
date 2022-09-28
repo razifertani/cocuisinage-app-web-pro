@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         if (!Schema::hasTable('professional')) {
-            Schema::create('professionals', function (Blueprint $table) {
+            Schema::create('professional', function (Blueprint $table) {
                 $table->id();
 
                 $table->string('first_name');
@@ -47,6 +47,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('professionals');
+        Schema::dropIfExists('professional');
     }
 };

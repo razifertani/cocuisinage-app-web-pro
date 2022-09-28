@@ -28,10 +28,6 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Company1',
                 'email' => 'company1@company.com',
             ]);
-            $company2 = Company::firstOrCreate([
-                'name' => 'Company2',
-                'email' => 'company2@company.com',
-            ]);
 
             // Establishments
             $establishment1 = Establishment::firstOrCreate([
@@ -50,12 +46,12 @@ class DatabaseSeeder extends Seeder
                 'city' => 'Nantes',
             ]);
             $establishment4 = Establishment::firstOrCreate([
-                'company_id' => $company2->id,
+                'company_id' => $company1->id,
                 'name' => 'Establishment4',
                 'city' => 'Rennes',
             ]);
             $establishment5 = Establishment::firstOrCreate([
-                'company_id' => $company2->id,
+                'company_id' => $company1->id,
                 'name' => 'Establishment5',
                 'city' => 'Marseille',
             ]);
@@ -239,7 +235,7 @@ class DatabaseSeeder extends Seeder
                 ],
             );
 
-            // // Plannings
+            // Plannings
             $planning1 = Planning::create([
                 'professional_id' => $professional1->id,
                 'establishment_id' => $establishment1->id,

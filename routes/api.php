@@ -72,6 +72,18 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/task/{id}', [TaskController::class, 'update']);
 
     /*
+     * Commandes related routes
+     */
+
+    Route::group(['prefix' => 'commande'], function () {
+        Route::post('get', [CommandeController::class, 'getCommande']);
+        Route::get('get/{id}', [CommandeController::class, 'getCommandeById']);
+        Route::post('store', [CommandeController::class, 'store']);
+        Route::post('updateStatus', [CommandeController::class, 'updateStatus']);
+        Route::get('stat', [CommandeController::class, 'getStatistique']);
+    });
+
+    /*
      * Authenticated related routes
      */
 
