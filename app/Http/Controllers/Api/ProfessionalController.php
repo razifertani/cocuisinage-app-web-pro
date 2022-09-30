@@ -24,6 +24,7 @@ class ProfessionalController extends Controller
                 'company.establishments.professionals.plannings.tasks',
 
                 'tasks',
+                'notifications',
                 // 'company.establishments.plannings',
                 //  'roles.permissions'
             ]);

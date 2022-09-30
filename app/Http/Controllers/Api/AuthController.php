@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Professional;
+use App\Services\FCMService;
 use Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -12,6 +13,7 @@ class AuthController extends Controller
 {
     public function test()
     {
+        return (new FCMService())->sendFCM(1, 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
     }
 
     public function config_mobile()

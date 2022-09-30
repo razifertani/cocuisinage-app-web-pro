@@ -37,8 +37,9 @@ class TaskController extends Controller
                 'name' => request('name'),
                 'status' => request('status'),
                 'comment' => request('comment'),
-                // 'image' => request('image'),
             ]);
+
+            (new FCMService())->sendFCM(request('professional_id'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
 
             return response()->json([
                 'error' => false,

@@ -32,6 +32,7 @@ class Professional extends Authenticatable
         'profile_photo_path',
         'cov_photo_path',
         'company_id',
+        'fcm_token',
     ];
 
     /**
@@ -58,6 +59,11 @@ class Professional extends Authenticatable
     protected $appends = [
         'image_url',
     ];
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 
     public function getImageUrlAttribute()
     {
@@ -105,5 +111,10 @@ class Professional extends Authenticatable
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(FCMNotification::class);
     }
 }

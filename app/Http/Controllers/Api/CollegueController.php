@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\SendInvitationLinkMail;
+use App\Models\Establishment;
 use App\Models\Invitation;
 use App\Models\Professional;
-use Carbon\Carbon;
+use App\Services\FCMService;
 use Hash;
 use Mail;
 use Spatie\Permission\Models\Role;
@@ -68,8 +69,6 @@ class CollegueController extends Controller
 
     public function accept_collegue_invitation($url_token)
     {
-        logger($url_token);
-
         try {
             request()->validate([
                 'password' => 'required',
@@ -117,10 +116,15 @@ class CollegueController extends Controller
             $invitation->registered_at = Carbon::now();
             $invitation->save();
 
+            $owner_id = Establishment::findOrFail($params['establishment_id'])->professionals()->wherePivot('role_id', 1)->first()?->id;
+
+            (new FCMService())->sendFCM($owner_id, 'Invitation accéptée', 'Collègue ' . $collegue->fullname . ' a accepté votre invitation');
+
             return response()->json([
                 'error' => false,
                 'message' => 'Collègue créé avec succès !',
             ], 200);
+
         } catch (\Throwable$th) {
             report($th);
             return response()->json([
@@ -158,19 +162,26 @@ class CollegueController extends Controller
             }
 
             if ($collegue->permissions->contains(request('permission_id'))) {
+
                 $collegue->permissions()->detach(
                     request('permission_id'),
                     [
                         'establishment_id' => request('establishment_id'),
                     ],
                 );
+
+                (new FCMService())->sendFCM($collegue->id, 'Permission révoquée', 'La permission ' . Permission::findOrFail(request('permission_id'))->name . ' vous a été révoqué !');
+
             } else {
+
                 $collegue->permissions()->attach(
                     request('permission_id'),
                     [
                         'establishment_id' => request('establishment_id'),
                     ],
                 );
+
+                (new FCMService())->sendFCM($collegue->id, 'Permission accordée', 'La permission ' . Permission::findOrFail(request('permission_id'))->name . ' vous a été accordée !');
             }
 
             return response()->json([

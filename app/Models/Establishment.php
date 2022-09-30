@@ -11,7 +11,7 @@ class Establishment extends Model
 
     public function professionals()
     {
-        return $this->belongsToMany(Professional::class, 'professional_roles_in_establishment');
+        return $this->belongsToMany(Professional::class, 'professional_roles_in_establishment')->withPivot('role_id');
     }
 
     public function company()

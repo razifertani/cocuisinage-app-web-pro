@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('test', [AuthController::class, 'test']);
+Route::post('test', [AuthController::class, 'test']);
 
 Route::get('config/mobile', [AuthController::class, 'config_mobile']);
 
