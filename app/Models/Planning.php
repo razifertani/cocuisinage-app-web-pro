@@ -24,6 +24,21 @@ class Planning extends Model
         "day",
     ];
 
+    protected $appends = [
+        'status',
+    ];
+
+    public function getStatusAttribute()
+    {
+        if ($this->started_at == null && $this->finished_at == null) {
+            return 0;
+        } else if ($this->started_at != null && $this->finished_at == null) {
+            return 1;
+        } else if ($this->started_at != null && $this->finished_at != null) {
+            return 2;
+        }
+    }
+
     public function professional()
     {
         return $this->belongsTo(Professional::class);
