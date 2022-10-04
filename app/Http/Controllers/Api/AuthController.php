@@ -13,14 +13,14 @@ class AuthController extends Controller
 {
     public function test()
     {
+
         // return (new FCMService())->sendFCM(1, 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
     }
 
     public function config_mobile()
     {
         try {
-
-            $roles = Role::with('permissions')->get();
+            $roles = Role::whereIn('establishment_id', auth()->user()->company->establishments->pluck('id'))->with('permissions')->get();
             $permissions = Permission::all();
 
             return response()->json([

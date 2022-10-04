@@ -5,8 +5,8 @@ use App\Http\Controllers\Api\CollegueController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\PlanningController;
 use App\Http\Controllers\Api\ProfessionalController;
+use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TaskController;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('test', [AuthController::class, 'test']);
 
-Route::get('config/mobile', [AuthController::class, 'config_mobile']);
-
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('register', [AuthController::class, 'register']);
@@ -38,11 +36,11 @@ Route::post('/collegue/accept_invitation/{url_token}', [CollegueController::clas
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
-    Route::post('image-upload', [Controller::class, 'imageUploadPost']);
-
     /*
      * Authenticated related routes
      */
+
+    Route::get('config/mobile', [AuthController::class, 'config_mobile']);
 
     Route::get('/user', [ProfessionalController::class, 'user']);
 
@@ -68,26 +66,25 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
      * Task related routes
      */
 
-    Route::post('/task', [TaskController::class, 'store']);
-    Route::post('/task/{id}', [TaskController::class, 'update']);
+    Route::post('/tasks', [TaskController::class, 'store']);
 
-    /*
-     * Commandes related routes
-     */
-
-    Route::group(['prefix' => 'commande'], function () {
-        Route::post('get', [CommandeController::class, 'getCommande']);
-        Route::get('get/{id}', [CommandeController::class, 'getCommandeById']);
-        Route::post('store', [CommandeController::class, 'store']);
-        Route::post('updateStatus', [CommandeController::class, 'updateStatus']);
-        Route::get('stat', [CommandeController::class, 'getStatistique']);
-    });
+    Route::post('/tasks/{id}', [TaskController::class, 'update']);
 
     /*
      * Authenticated related routes
      */
 
     Route::get('/logout', [AuthController::class, 'logout']);
+
+    /*
+     * Roles related routes
+     */
+
+    Route::post('/roles', [RoleController::class, 'store']);
+
+    Route::post('/roles/{id}', [RoleController::class, 'update']);
+
+    Route::delete('/roles/{id}', [RoleController::class, 'delete']);
 
 });
 

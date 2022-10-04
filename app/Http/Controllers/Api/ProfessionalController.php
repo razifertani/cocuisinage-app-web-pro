@@ -12,13 +12,13 @@ class ProfessionalController extends Controller
     public function user()
     {
         try {
-
             $user = request()->user();
             $user->load([
                 'establishments_roles',
                 'establishments_permissions',
                 'company.establishments.professionals.establishments_roles',
                 'company.establishments.professionals.establishments_permissions',
+                'company.establishments.roles',
 
                 'plannings.tasks',
                 'company.establishments.professionals.plannings.tasks',
@@ -53,7 +53,6 @@ class ProfessionalController extends Controller
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'email' => ['required', Rule::unique('professional')->ignore($user)],
-                'phone_number' => 'sometimes',
             ]);
 
             if (request()->hasFile('image')) {
@@ -64,6 +63,7 @@ class ProfessionalController extends Controller
             $user->last_name = request('last_name');
             $user->email = request('email');
             $user->phone_number = request('phone_number');
+            $user->fcm_token = request('fcm_token');
 
             /*
             if (request()->has('role_id')) {

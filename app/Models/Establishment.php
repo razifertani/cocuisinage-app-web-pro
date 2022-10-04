@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role;
 
 class Establishment extends Model
 {
@@ -22,5 +23,10 @@ class Establishment extends Model
     public function plannings()
     {
         return $this->hasMany(Planning::class)->orderBy('should_start_at');
+    }
+
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
     }
 }

@@ -7,7 +7,7 @@ use App\Models\Company;
 use App\Models\Establishment;
 use App\Models\Planning;
 use App\Models\Professional;
-// use App\Models\Task;
+use App\Models\Task;
 use Hash;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -58,50 +58,12 @@ class DatabaseSeeder extends Seeder
 
             // Roles & Permissions
             $role1 = Role::firstOrCreate(['name' => 'Patron']);
-            $role2 = Role::firstOrCreate(['name' => 'Responsable salle']);
-            $role3 = Role::firstOrCreate(['name' => 'Responsable cuisine']);
-            $role4 = Role::firstOrCreate(['name' => 'Serveur']);
-            $role5 = Role::firstOrCreate(['name' => 'Cuisinier']);
-            $role6 = Role::firstOrCreate(['name' => 'Plongeur']);
-            $permission1 = Permission::firstOrCreate(['name' => 'Manage order status']);
-            $permission2 = Permission::firstOrCreate(['name' => 'Manage order preparation']);
-            $permission3 = Permission::firstOrCreate(['name' => 'Add collaborators']);
-            $permission4 = Permission::firstOrCreate(['name' => 'Add tasks to the team']);
-            $permission5 = Permission::firstOrCreate(['name' => 'Manage roles']);
-            $permission6 = Permission::firstOrCreate(['name' => 'Manage the store']);
-            $permission7 = Permission::firstOrCreate(['name' => 'Add products']);
-            $permission8 = Permission::firstOrCreate(['name' => 'Manage the wallet']);
-            $permission9 = Permission::firstOrCreate(['name' => 'Manage transfers and transactions']);
-            $permission10 = Permission::firstOrCreate(['name' => 'Add a recipe']);
-            $permission11 = Permission::firstOrCreate(['name' => 'Favorite recipes']);
 
-            $role1->syncPermissions([
-                $permission1, $permission2, $permission3, $permission4, $permission5, $permission6,
-                $permission7, $permission8, $permission9, $permission10, $permission11,
-            ]);
+            $permission1 = Permission::firstOrCreate(['name' => 'Add collaborators']);
+            $permission2 = Permission::firstOrCreate(['name' => 'Add tasks to the team']);
+            $permission3 = Permission::firstOrCreate(['name' => 'Manage roles']);
 
-            $role2->syncPermissions([
-                $permission2, $permission3, $permission4, $permission5,
-                $permission6, $permission7, $permission10, $permission11,
-            ]);
-
-            $role3->syncPermissions([
-                $permission2, $permission3, $permission4, $permission5,
-                $permission6, $permission7, $permission10, $permission11,
-            ]);
-
-            $role4->syncPermissions([
-                $permission2, $permission3, $permission4, $permission5,
-                $permission6, $permission7, $permission10, $permission11,
-            ]);
-
-            $role5->syncPermissions([
-                $permission2, $permission4, $permission10,
-            ]);
-
-            $role6->syncPermissions([
-                $permission2, $permission4, $permission10,
-            ]);
+            $role1->syncPermissions([$permission1, $permission2, $permission3]);
 
             // Professionals
             $professional1 = Professional::firstOrCreate(
@@ -239,30 +201,21 @@ class DatabaseSeeder extends Seeder
             $planning1 = Planning::create([
                 'professional_id' => $professional1->id,
                 'establishment_id' => $establishment1->id,
-                'day' => '2022-09-27',
+                'day' => '2022-10-6',
                 'should_start_at' => '09:00',
                 'should_finish_at' => '13:00',
             ]);
-            $planning2 = Planning::create([
-                'professional_id' => $professional2->id,
+
+            // Tasks
+            $task1 = Task::create([
+                'professional_id' => $professional1->id,
                 'establishment_id' => $establishment1->id,
-                'day' => '2022-09-27',
-                'should_start_at' => '14:00',
-                'should_finish_at' => '15:00',
+                'planning_id' => $planning1->id,
+                'name' => 'Préparer les tomates',
+                'status' => 0,
+                'comment' => null,
+                'image' => null,
             ]);
-
-            // // Tasks
-            // $task1 = Task::create([
-            //     'professional_id' => $professional1->id,
-            //     'establishment_id' => $establishment1->id,
-            //     'planning_id' => $planning1->id,
-            //     'name' => 'Préparer les tomates',
-            //     'status' => 0,
-            //     'comment' => null,
-            //     'image' => null,
-            // ]);
-
         }
-
     }
 }
