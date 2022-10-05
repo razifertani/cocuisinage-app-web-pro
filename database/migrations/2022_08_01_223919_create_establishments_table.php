@@ -26,8 +26,8 @@ return new class extends Migration
                 $table->string('address')->nullable();
                 $table->string('city')->nullable();
                 $table->string('zip_code')->nullable();
-                $table->string('longitude')->nullable();
-                $table->string('latitude')->nullable();
+                $table->string('longitude');
+                $table->string('latitude');
                 $table->string('description')->nullable();
 
                 $table->timestamps();

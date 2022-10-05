@@ -23,23 +23,19 @@ return new class extends Migration
 
         if (!Schema::hasTable($tableNames['permissions'])) {
             Schema::create($tableNames['permissions'], function (Blueprint $table) {
-                $table->bigIncrements('id'); // permission id
-                $table->string('name'); // For MySQL 8.0 use string('name', 125);
-                $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->string('guard_name');
                 $table->timestamps();
-
-                $table->unique(['name', 'guard_name']);
             });
         }
 
         if (!Schema::hasTable($tableNames['roles'])) {
             Schema::create($tableNames['roles'], function (Blueprint $table) use ($columnNames) {
-                $table->bigIncrements('id'); // role id
-                $table->string('name'); // For MySQL 8.0 use string('name', 125);
-                $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->string('guard_name');
                 $table->timestamps();
-
-                $table->unique(['name', 'guard_name']);
             });
         }
 
@@ -51,7 +47,7 @@ return new class extends Migration
                 $table->index([$columnNames['model_morph_key']], 'model_has_permissions_model_id_index');
 
                 $table->foreign(PermissionRegistrar::$pivotPermission)
-                    ->references('id') // permission id
+                    ->references('id')
                     ->on($tableNames['permissions'])
                     ->onDelete('cascade');
 
@@ -68,7 +64,7 @@ return new class extends Migration
 
                 $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
                 $table->foreign(PermissionRegistrar::$pivotRole)
-                    ->references('id') // role id
+                    ->references('id')
                     ->on($tableNames['roles'])
                     ->onDelete('cascade');
 
@@ -83,22 +79,18 @@ return new class extends Migration
                 $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
 
                 $table->foreign(PermissionRegistrar::$pivotPermission)
-                    ->references('id') // permission id
+                    ->references('id')
                     ->on($tableNames['permissions'])
                     ->onDelete('cascade');
 
                 $table->foreign(PermissionRegistrar::$pivotRole)
-                    ->references('id') // role id
+                    ->references('id')
                     ->on($tableNames['roles'])
                     ->onDelete('cascade');
 
                 $table->primary([PermissionRegistrar::$pivotPermission, PermissionRegistrar::$pivotRole], 'role_has_permissions_permission_id_role_id_primary');
             });
         }
-
-        app('cache')
-            ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
-            ->forget(config('permission.cache.key'));
     }
 
     /**

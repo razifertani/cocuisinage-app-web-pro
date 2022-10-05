@@ -34,36 +34,76 @@ class DatabaseSeeder extends Seeder
                 'company_id' => $company1->id,
                 'name' => 'Establishment1',
                 'city' => 'Paris',
+                'longitude' => '48.858974',
+                'latitude' => '2.293415',
             ]);
             $establishment2 = Establishment::firstOrCreate([
                 'company_id' => $company1->id,
                 'name' => 'Establishment2',
                 'city' => 'Lyon',
+                'longitude' => '48.858974',
+                'latitude' => '2.293415',
             ]);
             $establishment3 = Establishment::firstOrCreate([
                 'company_id' => $company1->id,
                 'name' => 'Establishment3',
                 'city' => 'Nantes',
+                'longitude' => '48.858974',
+                'latitude' => '2.293415',
             ]);
             $establishment4 = Establishment::firstOrCreate([
                 'company_id' => $company1->id,
                 'name' => 'Establishment4',
                 'city' => 'Rennes',
+                'longitude' => '48.858974',
+                'latitude' => '2.293415',
             ]);
             $establishment5 = Establishment::firstOrCreate([
                 'company_id' => $company1->id,
                 'name' => 'Establishment5',
                 'city' => 'Marseille',
+                'longitude' => '48.858974',
+                'latitude' => '2.293415',
             ]);
 
             // Roles & Permissions
-            $role1 = Role::firstOrCreate(['name' => 'Patron']);
+            $role1 = Role::firstOrCreate(
+                [
+                    'name' => 'Patron',
+                    'establishment_id' => 1,
+                ],
+                [
+                    'name' => 'Patron',
+                    'establishment_id' => 1,
+                ]
+            );
+            $role2 = Role::firstOrCreate(
+                [
+                    'name' => 'Développeur',
+                    'establishment_id' => 1,
+                ],
+                [
+                    'name' => 'Développeur',
+                    'establishment_id' => 1,
+                ]
+            );
+            $role3 = Role::firstOrCreate(
+                [
+                    'name' => 'Chef de projet',
+                    'establishment_id' => 5,
+                ],
+                [
+                    'name' => 'Chef de projet',
+                    'establishment_id' => 5,
+                ]
+            );
 
-            $permission1 = Permission::firstOrCreate(['name' => 'Add collaborators']);
-            $permission2 = Permission::firstOrCreate(['name' => 'Add tasks to the team']);
-            $permission3 = Permission::firstOrCreate(['name' => 'Manage roles']);
+            $permission1 = Permission::firstOrCreate(['name' => 'Ajouter des collaborateurs']);
+            $permission2 = Permission::firstOrCreate(['name' => 'Ajouter des tâches']);
+            $permission3 = Permission::firstOrCreate(['name' => 'Gestion des rôles']);
+            $permission4 = Permission::firstOrCreate(['name' => 'Travailler à distance']);
 
-            $role1->syncPermissions([$permission1, $permission2, $permission3]);
+            $role1->syncPermissions([$permission1, $permission2, $permission3, $permission4]);
 
             // Professionals
             $professional1 = Professional::firstOrCreate(
@@ -78,7 +118,6 @@ class DatabaseSeeder extends Seeder
                     'company_id' => $company1->id,
                 ]
             );
-
             $professional2 = Professional::firstOrCreate(
                 [
                     'email' => 'co-cuisinage@outlook.fr',
@@ -91,7 +130,6 @@ class DatabaseSeeder extends Seeder
                     'company_id' => $company1->id,
                 ]
             );
-
             $professional3 = Professional::firstOrCreate(
                 [
                     'email' => 'foodeatup@outlook.fr',
@@ -104,7 +142,6 @@ class DatabaseSeeder extends Seeder
                     'company_id' => $company1->id,
                 ]
             );
-
             $professional4 = Professional::firstOrCreate(
                 [
                     'email' => 'fares.khiari@esen.tn',
@@ -117,7 +154,6 @@ class DatabaseSeeder extends Seeder
                     'company_id' => $company1->id,
                 ]
             );
-
             $professional5 = Professional::firstOrCreate(
                 [
                     'email' => 'HamedChamkhii@gmail.com',
@@ -130,6 +166,18 @@ class DatabaseSeeder extends Seeder
                     'company_id' => $company1->id,
                 ]
             );
+            // $professional6 = Professional::firstOrCreate(
+            //     [
+            //         'email' => 'hamedemploye@gmail.com',
+            //     ],
+            //     [
+            //         'first_name' => 'Hamed',
+            //         'last_name' => 'Employe',
+            //         'email' => 'hamedemploye@gmail.com',
+            //         'password' => Hash::make('123456'),
+            //         'company_id' => $company1->id,
+            //     ]
+            // );
 
             // Affect Professional to Establishments with roles & permissions
             $professional1->establishments_roles()->attach(
@@ -196,6 +244,19 @@ class DatabaseSeeder extends Seeder
                     'establishment_id' => $establishment5->id,
                 ],
             );
+
+            // $professional6->establishments_roles()->attach(
+            //     $establishment5->id,
+            //     [
+            //         'role_id' => $role2->id,
+            //     ],
+            // );
+            // $professional6->permissions()->attach(
+            //     Role::findOrFail($role2->id)->permissions,
+            //     [
+            //         'establishment_id' => $establishment5->id,
+            //     ],
+            // );
 
             // Plannings
             $planning1 = Planning::create([

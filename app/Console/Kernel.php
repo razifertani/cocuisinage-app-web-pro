@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('planning:started')->everyMinute();
+        $schedule->command('planning:started')->everyThirtyMinutes();
     }
 
     /**
