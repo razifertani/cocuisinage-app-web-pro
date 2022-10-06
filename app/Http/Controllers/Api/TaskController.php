@@ -24,7 +24,7 @@ class TaskController extends Controller
                 'status' => 'required',
             ]);
 
-            if (!auth()->user()->can(Permission::find(4)->name)) {
+            if (!auth()->user()->can(Permission::find(config('cocuisinage.permissions_ids.manage_tasks'))->name)) {
                 return response()->json([
                     'error' => true,
                     'message' => 'Permission non accordé !',
@@ -58,7 +58,6 @@ class TaskController extends Controller
 
     public function update($id)
     {
-
         try {
             request()->validate([
                 'professional_id' => 'required',
@@ -94,5 +93,4 @@ class TaskController extends Controller
             ], 500);
         }
     }
-
 }

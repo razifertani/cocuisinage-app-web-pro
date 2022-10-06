@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-// use App\Exceptions\FCMCannotBeSent;
-// use App\Models\FCMNotification;
+use App\Exceptions\FCMCannotBeSent;
+use App\Models\FCMNotification;
 use App\Models\Professional;
 
 class FCMService
@@ -18,43 +18,46 @@ class FCMService
     public function sendFCM($professional_id, $title, $body)
     {
         try {
-
             $user = Professional::findOrFail($professional_id);
 
-            // if ($user->fcm_token == null) {
-            //     throw new FCMCannotBeSent('Impossible d\'envoyer la notification');
-            // }
+            if ($user->fcm_token == null) {
+                return false;
+            }
 
-            // $serverKey = env('FIREBASE_SERVER_KEY');
-            // $request = self::$client->request('POST', 'https://fcm.googleapis.com/fcm/send', [
-            //     'headers' => [
-            //         'Content-Type' => 'application/json',
-            //         'Authorization' => 'key=' . $serverKey,
-            //     ],
-            //     'body' => json_encode([
-            //         "to" => $user->fcm_token,
-            //         "notification" => [
-            //             "title" => $title,
-            //             "body" => $body,
-            //         ],
-            //     ]),
-            // ]);
+            if (auth()->user()?->id == $professional_id) {
+                return false;
+            }
 
-            // $response = $request->getBody();
-            // $json = json_decode($response, true);
+            $serverKey = env('FIREBASE_SERVER_KEY');
+            $request = self::$client->request('POST', 'https://fcm.googleapis.com/fcm/send', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'key=' . $serverKey,
+                ],
+                'body' => json_encode([
+                    "to" => $user->fcm_token,
+                    "notification" => [
+                        "title" => $title,
+                        "body" => $body,
+                    ],
+                ]),
+            ]);
 
-            // if ($json['success'] == 1) {
+            $response = $request->getBody();
+            $json = json_decode($response, true);
 
-            //     FCMNotification::create([
-            //         'professional_id' => $professional_id,
-            //         'title' => $title,
-            //         'body' => $body,
-            //     ]);
+            if ($json['success'] == 1) {
 
-            //     return true;
-            // } else {
-            //     throw new FCMCannotBeSent('Impossible d\'envoyer la notification');
-            // };
+                FCMNotification::create([
+                    'professional_id' => $professional_id,
+                    'title' => $title,
+                    'body' => $body,
+                ]);
+
+                return true;
+            } else {
+                throw new FCMCannotBeSent('Impossible d\'envoyer la notification');
+            };
 
         } catch (\Throwable$th) {
             report($th);

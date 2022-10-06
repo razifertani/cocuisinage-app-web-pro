@@ -11,6 +11,7 @@ use App\Services\FCMService;
 use Carbon\Carbon;
 use Hash;
 use Mail;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class CollegueController extends Controller
@@ -117,9 +118,9 @@ class CollegueController extends Controller
             $invitation->registered_at = Carbon::now();
             $invitation->save();
 
-            $owner_id = Establishment::findOrFail($params['establishment_id'])->professionals()->wherePivot('role_id', 1)->first()?->id;
+            $establishment = Establishment::findOrFail($params['establishment_id']);
 
-            (new FCMService())->sendFCM($owner_id, 'Invitation accéptée', 'Collègue ' . $collegue->fullname . ' a accepté votre invitation');
+            (new FCMService())->sendFCM($establishment->owner()->id, 'Invitation accéptée', 'Collègue ' . $collegue->fullname . ' a accepté votre invitation');
 
             return response()->json([
                 'error' => false,
@@ -146,16 +147,25 @@ class CollegueController extends Controller
 
             $collegue = Professional::with('establishments_roles')->findOrFail(request('collegue_id'));
 
-            $auth_user_is_not_owner = auth()->user()->establishments_roles->firstWhere('id', request('establishment_id'))->pivot->role_id != 1;
-            $auth_user_have_not_manage_roles_permission = auth()->user()->establishments_permissions->where('id', request('establishment_id'))->where('permission_id', 5)->count() > 0;
-            if ($auth_user_is_not_owner && $auth_user_have_not_manage_roles_permission) {
+            $auth_user_can_manage_permissions = auth()->user()
+                ->establishments_permissions()
+                ->where('establishment_id', request('establishment_id'))
+                ->where('permission_id', config('cocuisinage.permissions_ids.manage_permissions'))
+                ->count() > 0;
+
+            if (!$auth_user_can_manage_permissions) {
                 return response()->json([
                     'error' => true,
                     'message' => 'Vous n\'avez pas la permission !',
                 ], 401);
             }
 
-            if ($collegue->establishments_roles->firstWhere('id', request('establishment_id'))->pivot->role_id == 1) {
+            $is_owner = $collegue->establishments_roles()
+                ->where('establishment_id', request('establishment_id'))
+                ->where('role_id', config('cocuisinage.role_owner_id'))
+                ->count() > 0;
+
+            if ($is_owner) {
                 return response()->json([
                     'error' => true,
                     'message' => 'Le patron doit avoir toutes les permissions !',
@@ -183,6 +193,7 @@ class CollegueController extends Controller
                 );
 
                 (new FCMService())->sendFCM($collegue->id, 'Permission accordée', 'La permission ' . Permission::findOrFail(request('permission_id'))->name . ' vous a été accordée !');
+
             }
 
             return response()->json([

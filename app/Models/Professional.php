@@ -67,13 +67,18 @@ class Professional extends Authenticatable
 
     public function getImageUrlAttribute()
     {
-        if ($this->profile_photo_path != null) {
-            $link = Storage::cloud()->temporaryUrl(
-                'professionals/' . auth()->user()->id . '/' . $this->profile_photo_path,
-                now()->addMinutes(30),
-            );
-            return $link;
-        } else {
+        try {
+            if ($this->profile_photo_path != null) {
+                $link = Storage::cloud()->temporaryUrl(
+                    'professionals/' . auth()->user()?->id . '/' . $this->profile_photo_path,
+                    now()->addMinutes(30),
+                );
+                return $link;
+            } else {
+                return "https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg";
+            }
+        } catch (\Throwable$th) {
+            report($th);
             return "https://static.vecteezy.com/system/resources/previews/002/275/818/non_2x/female-avatar-woman-profile-icon-for-network-vector.jpg";
         }
     }

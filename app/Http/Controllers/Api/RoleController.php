@@ -53,14 +53,14 @@ class RoleController extends Controller
                 'name' => 'required',
             ]);
 
-            if (!auth()->user()->hasRole(Role::find(1)->name)) {
+            if (!auth()->user()->hasRole(Role::find(config('cocuisinage.role_owner_id'))->name)) {
                 return response()->json([
                     'error' => true,
                     'message' => 'Seul le patron peut modifier des rôles !',
                 ], 401);
             }
-            // Role "Patron"
-            if ($id == 1) {
+
+            if ($id == config('cocuisinage.role_owner_id')) {
                 return response()->json([
                     'error' => true,
                     'message' => 'Le rôle du patron ne peut pas être modifié !',
@@ -92,7 +92,7 @@ class RoleController extends Controller
                 'establishment_id' => 'required',
             ]);
 
-            if ($id == 1) {
+            if ($id == config('cocuisinage.role_owner_id')) {
                 return response()->json([
                     'error' => true,
                     'message' => 'Le rôle du patron ne peut pas être modifié !',

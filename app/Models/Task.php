@@ -26,7 +26,7 @@ class Task extends Model
     {
         if ($this->image != null) {
             $link = Storage::cloud()->temporaryUrl(
-                'professionals/' . auth()->user()->id . '/' . $this->image,
+                'professionals/' . auth()->user()?->id . '/' . $this->image,
                 now()->addMinutes(30),
             );
             return $link;

@@ -98,9 +98,9 @@ class DatabaseSeeder extends Seeder
                 ]
             );
 
-            $permission1 = Permission::firstOrCreate(['name' => 'Ajouter des collaborateurs']);
-            $permission2 = Permission::firstOrCreate(['name' => 'Ajouter des tâches']);
-            $permission3 = Permission::firstOrCreate(['name' => 'Gestion des rôles']);
+            $permission1 = Permission::firstOrCreate(['name' => 'Gestion des collaborateurs']);
+            $permission2 = Permission::firstOrCreate(['name' => 'Gestion des tâches']);
+            $permission3 = Permission::firstOrCreate(['name' => 'Gestion des permissions']);
             $permission4 = Permission::firstOrCreate(['name' => 'Travailler à distance']);
 
             $role1->syncPermissions([$permission1, $permission2, $permission3, $permission4]);
@@ -166,18 +166,6 @@ class DatabaseSeeder extends Seeder
                     'company_id' => $company1->id,
                 ]
             );
-            // $professional6 = Professional::firstOrCreate(
-            //     [
-            //         'email' => 'hamedemploye@gmail.com',
-            //     ],
-            //     [
-            //         'first_name' => 'Hamed',
-            //         'last_name' => 'Employe',
-            //         'email' => 'hamedemploye@gmail.com',
-            //         'password' => Hash::make('123456'),
-            //         'company_id' => $company1->id,
-            //     ]
-            // );
 
             // Affect Professional to Establishments with roles & permissions
             $professional1->establishments_roles()->attach(
@@ -244,19 +232,6 @@ class DatabaseSeeder extends Seeder
                     'establishment_id' => $establishment5->id,
                 ],
             );
-
-            // $professional6->establishments_roles()->attach(
-            //     $establishment5->id,
-            //     [
-            //         'role_id' => $role2->id,
-            //     ],
-            // );
-            // $professional6->permissions()->attach(
-            //     Role::findOrFail($role2->id)->permissions,
-            //     [
-            //         'establishment_id' => $establishment5->id,
-            //     ],
-            // );
 
             // Plannings
             $planning1 = Planning::create([

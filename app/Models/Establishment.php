@@ -29,4 +29,10 @@ class Establishment extends Model
     {
         return $this->hasMany(Role::class);
     }
+
+    public function owner()
+    {
+        return $this->professionals()->wherePivot('role_id', 1)->first();
+    }
+
 }

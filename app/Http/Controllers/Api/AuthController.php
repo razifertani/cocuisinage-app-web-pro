@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Professional;
-// use App\Services\FCMService;
+use App\Services\FCMService;
 use Auth;
 use Hash;
 use Spatie\Permission\Models\Permission;
@@ -14,6 +14,13 @@ class AuthController extends Controller
 {
     public function test()
     {
+        return Professional::findOrFail(1)->establishments_permissions()
+            ->where('establishment_id', 1) // request('establishment_id')
+            ->where('permission_id', 3) // config('cocuisinage.permissions_ids.manage_permissions')
+            ->count();
+
+        return (new FCMService())->sendFCM(1, 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
+
         $professional = Professional::firstOrCreate(
             [
                 'email' => 'hamedemploye@gmail.com',
@@ -39,13 +46,11 @@ class AuthController extends Controller
             ],
         );
 
-        // return (new FCMService())->sendFCM(1, 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
     }
 
     public function config_mobile()
     {
         try {
-            // $roles = Role::whereIn('establishment_id', auth()->user()->company->establishments->pluck('id'))->with('permissions')->get();
             $roles = Role::all();
             $permissions = Permission::all();
 
@@ -79,8 +84,7 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            $professional = Professional::where('email', request('email'))
-                ->first();
+            $professional = Professional::where('email', request('email'))->first();
 
             return response()->json([
                 'error' => false,
