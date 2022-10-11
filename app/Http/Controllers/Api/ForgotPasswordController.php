@@ -50,12 +50,12 @@ class ForgotPasswordController extends Controller
                 'token' => 'required',
             ]);
 
-            if (!DB::table('password_resets')
-                ->where([
-                    ['email', request('email')],
-                    ['token', request('token')],
-                ])
-                ->exists()) {
+            $token_exists = DB::table('password_resets')->where([
+                ['email', request('email')],
+                ['token', request('token')],
+            ])->exists();
+
+            if (!$token_exists) {
                 return response()->json([
                     'error' => true,
                     'message' => 'OTP invalide !',
@@ -85,12 +85,12 @@ class ForgotPasswordController extends Controller
                 'password' => 'required|confirmed',
             ]);
 
-            if (!DB::table('password_resets')
-                ->where([
-                    ['email', request('email')],
-                    ['token', request('token')],
-                ])
-                ->exists()) {
+            $token_exists = DB::table('password_resets')->where([
+                ['email', request('email')],
+                ['token', request('token')],
+            ])->exists();
+
+            if (!$token_exists) {
                 return response()->json([
                     'error' => true,
                     'message' => 'OTP invalide !',

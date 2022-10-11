@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Company;
 use App\Models\Establishment;
+use App\Models\NotificationType;
 use App\Models\Planning;
 use App\Models\Professional;
 use App\Models\Task;
@@ -23,80 +24,52 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         {
+
+            // Notifications Types
+            $notification_type1 = NotificationType::create(['name' => 'Gestion de permissions', 'slug' => 'permission']);
+            $notification_type2 = NotificationType::create(['name' => 'Gestion d\'horaire', 'slug' => 'planning']);
+            $notification_type3 = NotificationType::create(['name' => 'Gestion de tâches', 'slug' => 'task']);
+
             // Companies
-            $company1 = Company::firstOrCreate([
-                'name' => 'Company1',
-                'email' => 'company1@company.com',
-            ]);
+            $company1 = Company::firstOrCreate(['name' => 'Company1', 'email' => 'company1@company.com']);
+            $company2 = Company::firstOrCreate(['name' => 'Food Eat Up', 'email' => 'foodeatup@outlook.fr']);
 
             // Establishments
             $establishment1 = Establishment::firstOrCreate([
                 'company_id' => $company1->id,
-                'name' => 'Establishment1',
-                'city' => 'Paris',
+                'name' => 'Establishment de Razi',
+                'city' => 'Tunis',
                 'longitude' => '48.858974',
                 'latitude' => '2.293415',
             ]);
             $establishment2 = Establishment::firstOrCreate([
-                'company_id' => $company1->id,
-                'name' => 'Establishment2',
-                'city' => 'Lyon',
+                'company_id' => $company2->id,
+                'name' => 'Co Cuisinage',
+                'city' => 'Aubervilliers',
                 'longitude' => '48.858974',
                 'latitude' => '2.293415',
             ]);
             $establishment3 = Establishment::firstOrCreate([
-                'company_id' => $company1->id,
-                'name' => 'Establishment3',
-                'city' => 'Nantes',
-                'longitude' => '48.858974',
-                'latitude' => '2.293415',
-            ]);
-            $establishment4 = Establishment::firstOrCreate([
-                'company_id' => $company1->id,
-                'name' => 'Establishment4',
-                'city' => 'Rennes',
-                'longitude' => '48.858974',
-                'latitude' => '2.293415',
-            ]);
-            $establishment5 = Establishment::firstOrCreate([
-                'company_id' => $company1->id,
-                'name' => 'Establishment5',
-                'city' => 'Marseille',
+                'company_id' => $company2->id,
+                'name' => 'Prends Ta Part',
+                'city' => 'Tunis',
                 'longitude' => '48.858974',
                 'latitude' => '2.293415',
             ]);
 
             // Roles & Permissions
-            $role1 = Role::firstOrCreate(
-                [
-                    'name' => 'Patron',
-                    'establishment_id' => 1,
-                ],
-                [
-                    'name' => 'Patron',
-                    'establishment_id' => 1,
-                ]
-            );
-            $role2 = Role::firstOrCreate(
-                [
-                    'name' => 'Développeur',
-                    'establishment_id' => 1,
-                ],
-                [
-                    'name' => 'Développeur',
-                    'establishment_id' => 1,
-                ]
-            );
-            $role3 = Role::firstOrCreate(
-                [
-                    'name' => 'Chef de projet',
-                    'establishment_id' => 5,
-                ],
-                [
-                    'name' => 'Chef de projet',
-                    'establishment_id' => 5,
-                ]
-            );
+            $role1 = Role::create(['name' => 'Patron', 'establishment_id' => 1]);
+            $role2 = Role::create(['name' => 'Dévelopeur', 'establishment_id' => 1]);
+            $role3 = Role::create(['name' => 'Chef de projet', 'establishment_id' => 1]);
+
+            $role4 = Role::create(['name' => 'Développeur', 'establishment_id' => 2]);
+            $role5 = Role::create(['name' => 'Rédacteur', 'establishment_id' => 2]);
+            $role6 = Role::create(['name' => 'Nutritionniste', 'establishment_id' => 2]);
+            $role7 = Role::create(['name' => 'Sécurité', 'establishment_id' => 2]);
+            $role8 = Role::create(['name' => 'Graphiste', 'establishment_id' => 2]);
+
+            // $role9 = Role::create(['name' => 'Dévelopeur', 'establishment_id' => 3]);
+            // $role10 = Role::create(['name' => 'Graphiste', 'establishment_id' => 3]);
 
             $permission1 = Permission::firstOrCreate(['name' => 'Gestion des collaborateurs']);
             $permission2 = Permission::firstOrCreate(['name' => 'Gestion des tâches']);
@@ -105,7 +78,7 @@ class DatabaseSeeder extends Seeder
 
             $role1->syncPermissions([$permission1, $permission2, $permission3, $permission4]);
 
-            // Professionals
+            // Professionals - Owners
             $professional1 = Professional::firstOrCreate(
                 [
                     'email' => 'razifertani1@gmail.com',
@@ -116,33 +89,56 @@ class DatabaseSeeder extends Seeder
                     'email' => 'razifertani1@gmail.com',
                     'password' => Hash::make('123456'),
                     'company_id' => $company1->id,
+                    'is_owner' => 1,
                 ]
             );
-            $professional2 = Professional::firstOrCreate(
-                [
-                    'email' => 'co-cuisinage@outlook.fr',
-                ],
-                [
-                    'first_name' => 'Co',
-                    'last_name' => 'Cuisinage',
-                    'email' => 'co-cuisinage@outlook.fr',
-                    'password' => Hash::make('123456'),
-                    'company_id' => $company1->id,
-                ]
-            );
+            $professional1->attach_role($establishment1->id, $role1->id);
+            $professional1->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment1->id, 'active' => 1]);
+
+            $professional2 = Professional::create([
+                'first_name' => 'Razi',
+                'last_name' => 'Employe',
+                'email' => 'razi.fertani@esprit.tn',
+                'password' => Hash::make('123456'),
+                'company_id' => $company1->id,
+                'is_owner' => 0,
+            ]);
+            $professional2->attach_role($establishment1->id, $role2->id);
+            $professional2->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment1->id, 'active' => 1]);
+
             $professional3 = Professional::firstOrCreate(
                 [
-                    'email' => 'foodeatup@outlook.fr',
+                    'email' => 'mika9394@hotmail.fr',
                 ],
                 [
-                    'first_name' => 'Food',
-                    'last_name' => 'Eat Up',
-                    'email' => 'foodeatup@outlook.fr',
+                    'first_name' => 'Micheal',
+                    'last_name' => 'Kebail-Ali',
+                    'email' => 'mika9394@hotmail.fr',
                     'password' => Hash::make('123456'),
-                    'company_id' => $company1->id,
+                    'company_id' => $company2->id,
+                    'is_owner' => 1,
                 ]
             );
+            $professional3->attach_role($establishment2->id, $role1->id);
+            $professional3->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment2->id, 'active' => 1]);
+
             $professional4 = Professional::firstOrCreate(
+                [
+                    'email' => 'benalisouhail1@gmail.com',
+                ],
+                [
+                    'first_name' => 'Souhail',
+                    'last_name' => 'Ben Ali',
+                    'email' => 'benalisouhail1@gmail.com',
+                    'password' => Hash::make('123456'),
+                    'company_id' => $company2->id,
+                    'is_owner' => 0,
+                ]
+            );
+            $professional4->attach_role($establishment2->id, $role4->id);
+            $professional4->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment2->id, 'active' => 1]);
+
+            $professional5 = Professional::firstOrCreate(
                 [
                     'email' => 'fares.khiari@esen.tn',
                 ],
@@ -150,101 +146,42 @@ class DatabaseSeeder extends Seeder
                     'first_name' => 'Fares',
                     'last_name' => 'Khiari',
                     'email' => 'fares.khiari@esen.tn',
-                    'password' => Hash::make('123456'),
-                    'company_id' => $company1->id,
+                    'password' => Hash::make('123453'),
+                    'company_id' => $company2->id,
+                    'is_owner' => 0,
                 ]
             );
-            $professional5 = Professional::firstOrCreate(
+            $professional5->attach_role($establishment2->id, $role4->id);
+            $professional5->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment2->id, 'active' => 1]);
+
+            $professional6 = Professional::firstOrCreate(
                 [
-                    'email' => 'HamedChamkhii@gmail.com',
+                    'email' => 'yohanclairic@gmail.com',
                 ],
                 [
-                    'first_name' => 'Hamed',
-                    'last_name' => 'Chamkhii',
-                    'email' => 'HamedChamkhii@gmail.com',
+                    'first_name' => 'Yohan',
+                    'last_name' => 'Clairic',
+                    'email' => 'yohanclairic@gmail.com',
                     'password' => Hash::make('123456'),
-                    'company_id' => $company1->id,
+                    'company_id' => $company2->id,
+                    'is_owner' => 0,
                 ]
             );
-
-            // Affect Professional to Establishments with roles & permissions
-            $professional1->establishments_roles()->attach(
-                $establishment1->id,
-                [
-                    'role_id' => $role1->id,
-                ],
-            );
-            $professional1->permissions()->attach(
-                Role::findOrFail($role1->id)->permissions,
-                [
-                    'establishment_id' => $establishment1->id,
-                ],
-            );
-
-            $professional2->establishments_roles()->attach(
-                $establishment2->id,
-                [
-                    'role_id' => $role1->id,
-                ],
-            );
-            $professional2->permissions()->attach(
-                Role::findOrFail($role1->id)->permissions,
-                [
-                    'establishment_id' => $establishment2->id,
-                ],
-            );
-
-            $professional3->establishments_roles()->attach(
-                $establishment3->id,
-                [
-                    'role_id' => $role1->id,
-                ],
-            );
-            $professional3->permissions()->attach(
-                Role::findOrFail($role1->id)->permissions,
-                [
-                    'establishment_id' => $establishment3->id,
-                ],
-            );
-
-            $professional4->establishments_roles()->attach(
-                $establishment4->id,
-                [
-                    'role_id' => $role1->id,
-                ],
-            );
-            $professional4->permissions()->attach(
-                Role::findOrFail($role1->id)->permissions,
-                [
-                    'establishment_id' => $establishment4->id,
-                ],
-            );
-
-            $professional5->establishments_roles()->attach(
-                $establishment5->id,
-                [
-                    'role_id' => $role1->id,
-                ],
-            );
-            $professional5->permissions()->attach(
-                Role::findOrFail($role1->id)->permissions,
-                [
-                    'establishment_id' => $establishment5->id,
-                ],
-            );
+            $professional6->attach_role($establishment2->id, $role7->id);
+            $professional6->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment2->id, 'active' => 1]);
 
             // Plannings
             $planning1 = Planning::create([
-                'professional_id' => $professional1->id,
+                'professional_id' => $professional2->id,
                 'establishment_id' => $establishment1->id,
-                'day' => '2022-10-6',
+                'day' => '2022-10-10',
                 'should_start_at' => '09:00',
                 'should_finish_at' => '13:00',
             ]);
 
             // Tasks
             $task1 = Task::create([
-                'professional_id' => $professional1->id,
+                'professional_id' => $professional2->id,
                 'establishment_id' => $establishment1->id,
                 'planning_id' => $planning1->id,
                 'name' => 'Préparer les tomates',

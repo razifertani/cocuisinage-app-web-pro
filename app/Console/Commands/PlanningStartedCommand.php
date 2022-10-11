@@ -35,7 +35,7 @@ class PlanningStartedCommand extends Command
             ->get()
             ->each(function ($planning) {
                 logger("Sending FCM to " . $planning->professional_id . ", Planning " . $planning->id . " started !");
-                (new FCMService())->sendFCM($planning->professional_id, 'Planning commencé', 'Votre journée commence maintenant !');
+                (new FCMService())->sendFCM($planning->establishment_id, null, $planning->professional_id, config('cocuisinage.notifications_types.planning'), 'Planning commencé', 'Votre journée commence maintenant !');
             });
     }
 }

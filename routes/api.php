@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CollegueController;
+use App\Http\Controllers\Api\EstablishmentController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\PlanningController;
 use App\Http\Controllers\Api\ProfessionalController;
@@ -20,8 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::post('test', [AuthController::class, 'test']);
-
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('register', [AuthController::class, 'register']);
@@ -37,6 +36,12 @@ Route::post('/collegue/accept_invitation/{url_token}', [CollegueController::clas
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
     /*
+     * Test related routes
+     */
+
+    Route::post('test', [AuthController::class, 'test']);
+
+    /*
      * Authenticated related routes
      */
 
@@ -45,6 +50,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/user', [ProfessionalController::class, 'user']);
 
     Route::post('/user/{id}', [ProfessionalController::class, 'update']);
+
+    Route::post('/user/{id}/toggle_notification_type_active_param', [ProfessionalController::class, 'toggle_notification_type_active_param']);
 
     /*
      * Collegue related routes
@@ -86,6 +93,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::delete('/roles/{id}', [RoleController::class, 'delete']);
 
+    /*
+     * Establishments related routes
+     */
+
+    Route::post('/establishments', [EstablishmentController::class, 'store']);
 });
 
 Route::any('/{any}', function () {

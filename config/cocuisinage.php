@@ -11,7 +11,9 @@ return [
         'remote_work' => 4,
     ],
 
-    'role_owner_id' => 1,
-
-    'role_owner_id' => 1,
+    'notifications_types' => [
+        'permission' => 1,
+        'planning' => 2,
+        'task' => 3,
+    ],
 ];

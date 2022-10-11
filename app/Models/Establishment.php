@@ -4,11 +4,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role;
+use Storage;
 
 class Establishment extends Model
 {
 
-    protected $fillable = ["company_id", "name", "zip_code", "type", "city", "created_at", "updated_at"];
+    protected $fillable = [
+        'company_id',
+        'name',
+        'city',
+        'longitude',
+        'latitude',
+        'image_path',
+    ];
+
+    protected $appends = [
+        'image_url',
+    ];
+
+    public function getImageUrlAttribute()
+    {
+        try {
+            if ($this->image_path != null) {
+                $link = Storage::cloud()->temporaryUrl(
+                    'professionals/' . $this->owner()->id . '/' . $this->image_path,
+                    now()->addMinutes(30),
+                );
+                return $link;
+            } else {
+                return "https://images.wsj.net/im-581988/M";
+            }
+        } catch (\Throwable$th) {
+            report($th);
+            return "https://images.wsj.net/im-581988/M";
+        }
+    }
 
     public function professionals()
     {
@@ -32,7 +62,7 @@ class Establishment extends Model
 
     public function owner()
     {
-        return $this->professionals()->wherePivot('role_id', 1)->first();
+        return $this->professionals()->wherePivot('role_id', config('cocuisinage.role_owner_id'))->first();
     }
 
 }

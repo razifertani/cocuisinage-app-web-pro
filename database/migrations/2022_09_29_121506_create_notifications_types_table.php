@@ -13,9 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('professional', function (Blueprint $table) {
-            $table->string('fcm_token')->after('company_id')->nullable();
+        Schema::create('notifications_types', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('name');
+            $table->string('slug');
+
+            $table->timestamps();
         });
+
     }
 
     /**
@@ -25,8 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('professional', function (Blueprint $table) {
-            $table->dropColumn('fcm_token');
-        });
+        Schema::dropIfExists('notifications_types');
     }
 };

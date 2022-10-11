@@ -24,9 +24,11 @@ class ProfessionalController extends Controller
                 'company.establishments.professionals.plannings.tasks',
 
                 'tasks',
-                'notifications',
+                'notifications_params',
+                'notifications_as_sender',
+                'notifications_as_receiver',
                 // 'company.establishments.plannings',
-                //  'roles.permissions'
+                // 'roles.permissions'
             ]);
 
             return response()->json([
@@ -56,7 +58,7 @@ class ProfessionalController extends Controller
             ]);
 
             if (request()->hasFile('image')) {
-                $user->profile_photo_path = $this->upload_image();
+                $user->profile_photo_path = $this->upload_image(auth()->user()->id);
             }
 
             $user->first_name = request('first_name');
@@ -113,4 +115,29 @@ class ProfessionalController extends Controller
         }
     }
 
+    public function toggle_notification_type_active_param($id)
+    {
+        try {
+            request()->validate([
+                'establishment_id' => 'required',
+                'notification_type_id' => 'required',
+            ]);
+
+            $professional = Professional::with('roles')->findOrFail($id);
+
+            $professional->toggle_notification_type_active_param(request('establishment_id'), request('notification_type_id'));
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Paramètre mis à jour effectuée avec succès !',
+            ], 200);
+
+        } catch (\Throwable$th) {
+            report($th);
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }

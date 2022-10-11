@@ -24,6 +24,7 @@ class PlanningController extends Controller
             ], [
                 '*.should_finish_at.after_or_equal' => 'Vérifier les horaires que vous avez entré !',
             ]);
+
             if ($validator->fails()) {
                 return response()->json([
                     'error' => true,

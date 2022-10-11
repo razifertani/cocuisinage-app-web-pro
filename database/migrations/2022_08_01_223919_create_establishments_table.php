@@ -29,6 +29,7 @@ return new class extends Migration
                 $table->string('longitude');
                 $table->string('latitude');
                 $table->string('description')->nullable();
+                $table->string('image_path')->nullable();
 
                 $table->timestamps();
             });

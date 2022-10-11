@@ -15,16 +15,25 @@ class FCMService
         self::$client = new \GuzzleHttp\Client();
     }
 
-    public function sendFCM($professional_id, $title, $body)
+    public function sendFCM($establishment_id, $sender_id, $receiver_id, $notification_type_id, $title, $body)
     {
         try {
-            $user = Professional::findOrFail($professional_id);
+            $sender = Professional::findOrFail($sender_id);
+            $receiver = Professional::findOrFail($receiver_id);
 
-            if ($user->fcm_token == null) {
+            if ($receiver->fcm_token == null) {
                 return false;
             }
 
-            if (auth()->user()?->id == $professional_id) {
+            if ($sender_id == $receiver_id) {
+                return false;
+            }
+            if ($sender->fcm_token == $receiver->fcm_token) {
+                return false;
+            }
+
+            $fcm_type_activate = $receiver->notifications_params()->where('notifications_types.id', $notification_type_id)->wherePivot('establishment_id', $establishment_id)->first()->pivot->active;
+            if (!$fcm_type_activate) {
                 return false;
             }
 
@@ -35,11 +44,15 @@ class FCMService
                     'Authorization' => 'key=' . $serverKey,
                 ],
                 'body' => json_encode([
-                    "to" => $user->fcm_token,
-                    "notification" => [
-                        "title" => $title,
-                        "body" => $body,
+                    'to' => $receiver->fcm_token,
+                    'notification' => [
+                        'title' => $title,
+                        'body' => $body,
                     ],
+                    // 'data' => [
+                    //     'Nick' => 'Mario',
+                    //     'Room' => 'PortugalVSDenmark',
+                    // ],
                 ]),
             ]);
 
@@ -49,8 +62,11 @@ class FCMService
             if ($json['success'] == 1) {
 
                 FCMNotification::create([
-                    'professional_id' => $professional_id,
+                    'sender_id' => $sender_id,
+                    'receiver_id' => $receiver_id,
+                    'notification_type_id' => $notification_type_id,
                     'title' => $title,
+                    'establishment_id' => $establishment_id,
                     'body' => $body,
                 ]);
 

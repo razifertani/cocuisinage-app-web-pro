@@ -14,12 +14,23 @@ class AuthController extends Controller
 {
     public function test()
     {
-        return Professional::findOrFail(1)->establishments_permissions()
-            ->where('establishment_id', 1) // request('establishment_id')
-            ->where('permission_id', 3) // config('cocuisinage.permissions_ids.manage_permissions')
-            ->count();
+        Professional::findOrFail(6)->toggle_notification_type_active_param(1, 3);
+        return true;
 
-        return (new FCMService())->sendFCM(1, 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
+        return config('cocuisinage.notifications_types.planning');
+
+        return Professional::findOrFail(1)
+            ->establishments_permissions()
+            ->where('establishment_id', 1)
+            ->where('permission_id', 2)
+            ->count() > 0;
+
+        // return Professional::findOrFail(1)->establishments_permissions()
+        //     ->where('establishment_id', 1) // request('establishment_id')
+        //     ->where('permission_id', 3) // config('cocuisinage.permissions_ids.manage_permissions')
+        //     ->count();
+
+        return (new FCMService())->sendFCM(1, 1, 6, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
 
         $professional = Professional::firstOrCreate(
             [
@@ -100,9 +111,61 @@ class AuthController extends Controller
         }
     }
 
+    public function register()
+    {
+        try {
+            request()->validate([
+                'owner_email' => 'required|unique:professional,email|unique:invitations,email',
+                'owner_first_name' => 'required',
+                'owner_last_name' => 'required',
+                'owner_password' => 'required',
+
+                'company_email' => 'required|unique:companies,email',
+                'company_name' => 'required',
+                'company_phone_number' => 'required',
+                'company_rib' => 'required',
+                'company_siret' => 'required',
+            ]);
+
+            $company = Company::create([
+                'name' => $name,
+                'email' => $email,
+                'phone_number' => $phone_number,
+                'rib' => $rib,
+                'siret' => $siret,
+            ]);
+
+            $professional = Professional::create([
+                'email' => request('owner_email'),
+                'first_name' => request('owner_first_name'),
+                'last_name' => request('owner_last_name'),
+                'password' => Hash::make(request('owner_password')),
+                'company_id' => $company->id,
+                'is_owner' => 1,
+            ]);
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Compte créé avec succès, veuillez vous connecter !',
+            ], 200);
+
+        } catch (\Throwable$th) {
+            report($th);
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
     public function logout()
     {
         try {
+
+            Professional::where('id', auth()->user()->id)->update([
+                'fcm_token' => '',
+            ]);
+
             auth()->user()->tokens()->delete();
 
             return response()->json([

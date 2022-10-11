@@ -95,7 +95,7 @@ class RoleController extends Controller
             if ($id == config('cocuisinage.role_owner_id')) {
                 return response()->json([
                     'error' => true,
-                    'message' => 'Le rôle du patron ne peut pas être modifié !',
+                    'message' => 'Le rôle du patron ne peut pas être supprimé !',
                 ], 401);
             }
 

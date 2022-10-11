@@ -12,7 +12,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function upload_image()
+    public function upload_image($professional_id)
     {
         try {
             request()->validate([
@@ -21,7 +21,7 @@ class Controller extends BaseController
 
             $imageName = request('image')->hashName();
 
-            request('image')->storeAs('professionals/' . auth()->user()?->id, $imageName, 's3');
+            request('image')->storeAs('professionals/' . $professional_id, $imageName, 's3');
 
             $link = Storage::cloud()->url($imageName);
 

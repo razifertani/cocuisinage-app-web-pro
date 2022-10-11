@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Professional;
 use App\Models\Task;
 use App\Services\FCMService;
-use Spatie\Permission\Models\Permission;
 
 // use Mail;
 // use App\Mail\SendToOwnerDeniedTaskMail;
@@ -24,7 +23,9 @@ class TaskController extends Controller
                 'status' => 'required',
             ]);
 
-            if (!auth()->user()->can(Permission::find(config('cocuisinage.permissions_ids.manage_tasks'))->name)) {
+            $auth_user_can_add_tasks = auth()->user()->canManagePermission(request('establishment_id'), config('cocuisinage.permissions_ids.manage_tasks'));
+
+            if (!$auth_user_can_add_tasks) {
                 return response()->json([
                     'error' => true,
                     'message' => 'Permission non accordé !',
@@ -40,7 +41,7 @@ class TaskController extends Controller
                 'comment' => request('comment'),
             ]);
 
-            (new FCMService())->sendFCM(request('professional_id'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
+            (new FCMService())->sendFCM(request('establishment_id'), auth()->user()->id, request('professional_id'), config('cocuisinage.notifications_types.task'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
 
             return response()->json([
                 'error' => false,
@@ -75,7 +76,7 @@ class TaskController extends Controller
             $task->comment = request('comment') ?? $task->comment;
 
             if (request()->hasFile('image')) {
-                $task->image = $this->upload_image();
+                $task->image = $this->upload_image(auth()->user()->id);
             }
 
             $task->save();
