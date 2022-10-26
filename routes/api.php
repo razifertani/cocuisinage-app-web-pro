@@ -65,7 +65,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
      * Planning related routes
      */
 
-    Route::post('/plannings', [PlanningController::class, 'store_plannings']);
+    Route::post('/plannings', [PlanningController::class, 'store']);
+
+    Route::post('/planning/{id}', [PlanningController::class, 'update']);
 
     Route::post('/planning/{id}/update_time', [PlanningController::class, 'update_time']);
 

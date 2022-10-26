@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Company;
 use App\Models\Establishment;
+use App\Models\FCMNotification;
 use App\Models\NotificationType;
 use App\Models\Planning;
 use App\Models\Professional;
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
             // Companies
             $company1 = Company::firstOrCreate(['name' => 'Company1', 'email' => 'company1@company.com']);
             $company2 = Company::firstOrCreate(['name' => 'Food Eat Up', 'email' => 'foodeatup@outlook.fr']);
+            $company3 = Company::firstOrCreate(['name' => 'Hamed Company', 'email' => 'hamedchamkhii@gmail.com']);
 
             // Establishments
             $establishment1 = Establishment::firstOrCreate([
@@ -56,6 +58,13 @@ class DatabaseSeeder extends Seeder
                 'longitude' => '48.858974',
                 'latitude' => '2.293415',
             ]);
+            $establishment4 = Establishment::firstOrCreate([
+                'company_id' => $company3->id,
+                'name' => 'Hamed Est.',
+                'city' => 'Tunis',
+                'longitude' => '48.858974',
+                'latitude' => '2.293415',
+            ]);
 
             // Roles & Permissions
             $role1 = Role::create(['name' => 'Patron', 'establishment_id' => 1]);
@@ -68,15 +77,16 @@ class DatabaseSeeder extends Seeder
             $role7 = Role::create(['name' => 'Sécurité', 'establishment_id' => 2]);
             $role8 = Role::create(['name' => 'Graphiste', 'establishment_id' => 2]);
 
-            // $role9 = Role::create(['name' => 'Dévelopeur', 'establishment_id' => 3]);
+            $role9 = Role::create(['name' => 'Chef', 'establishment_id' => 4]);
             // $role10 = Role::create(['name' => 'Graphiste', 'establishment_id' => 3]);
 
             $permission1 = Permission::firstOrCreate(['name' => 'Gestion des collaborateurs']);
             $permission2 = Permission::firstOrCreate(['name' => 'Gestion des tâches']);
             $permission3 = Permission::firstOrCreate(['name' => 'Gestion des permissions']);
             $permission4 = Permission::firstOrCreate(['name' => 'Travailler à distance']);
+            $permission5 = Permission::firstOrCreate(['name' => 'Travailler librement']);
 
-            $role1->syncPermissions([$permission1, $permission2, $permission3, $permission4]);
+            $role1->syncPermissions([$permission1, $permission2, $permission3, $permission4, $permission5]);
 
             // Professionals - Owners
             $professional1 = Professional::firstOrCreate(
@@ -170,13 +180,66 @@ class DatabaseSeeder extends Seeder
             $professional6->attach_role($establishment2->id, $role7->id);
             $professional6->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment2->id, 'active' => 1]);
 
+            $professional7 = Professional::firstOrCreate(
+                [
+                    'email' => 'hamedchamkhii@gmail.com',
+                ],
+                [
+                    'first_name' => 'Hamed',
+                    'last_name' => 'Chamkhii',
+                    'email' => 'hamedchamkhii@gmail.com',
+                    'password' => Hash::make('123456'),
+                    'company_id' => $company3->id,
+                    'is_owner' => 1,
+                ]
+            );
+            $professional7->attach_role($establishment4->id, $role1->id);
+            $professional7->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment4->id, 'active' => 1]);
+
+            $professional8 = Professional::firstOrCreate(
+                [
+                    'email' => 'hcamkhi2002@gmail.com',
+                ],
+                [
+                    'first_name' => 'Hamed',
+                    'last_name' => 'Chamkhii',
+                    'email' => 'hcamkhi2002@gmail.com',
+                    'password' => Hash::make('123456'),
+                    'company_id' => $company3->id,
+                    'is_owner' => 0,
+                ]
+            );
+            $professional8->attach_role($establishment4->id, $role9->id);
+            $professional8->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment4->id, 'active' => 1]);
+
             // Plannings
             $planning1 = Planning::create([
                 'professional_id' => $professional2->id,
                 'establishment_id' => $establishment1->id,
-                'day' => '2022-10-10',
+                'day' => '2022-10-26',
                 'should_start_at' => '09:00',
                 'should_finish_at' => '13:00',
+            ]);
+            $planning2 = Planning::create([
+                'professional_id' => $professional2->id,
+                'establishment_id' => $establishment1->id,
+                'day' => '2022-10-26',
+                'should_start_at' => '14:00',
+                'should_finish_at' => '18:00',
+            ]);
+            $planning3 = Planning::create([
+                'professional_id' => $professional2->id,
+                'establishment_id' => $establishment1->id,
+                'day' => '2022-10-27',
+                'should_start_at' => '16:00',
+                'should_finish_at' => '18:00',
+            ]);
+            $planning4 = Planning::create([
+                'professional_id' => $professional8->id,
+                'establishment_id' => $establishment4->id,
+                'day' => '2022-10-26',
+                'should_start_at' => '16:00',
+                'should_finish_at' => '18:00',
             ]);
 
             // Tasks
@@ -188,6 +251,32 @@ class DatabaseSeeder extends Seeder
                 'status' => 0,
                 'comment' => null,
                 'image' => null,
+            ]);
+            $task2 = Task::create([
+                'professional_id' => $professional2->id,
+                'establishment_id' => $establishment1->id,
+                'planning_id' => $planning2->id,
+                'name' => 'Préparer les sauces',
+                'status' => 0,
+                'comment' => null,
+                'image' => null,
+            ]);
+
+            $notification1 = FCMNotification::create([
+                'sender_id' => $professional2->id,
+                'receiver_id' => $professional1->id,
+                'notification_type_id' => 1,
+                'title' => "Tâche terminée",
+                'establishment_id' => 1,
+                'body' => "L'employé Ahmed a terminé une tâche",
+            ]);
+            $notification2 = FCMNotification::create([
+                'sender_id' => $professional2->id,
+                'receiver_id' => $professional1->id,
+                'notification_type_id' => 1,
+                'title' => "Pointage en retard",
+                'establishment_id' => 1,
+                'body' => "L'employé Ahmed a pointée son entrée avec 10 minutes de retard",
             ]);
         }
     }

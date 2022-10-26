@@ -9,6 +9,7 @@ return [
         'manage_tasks' => 2,
         'manage_permissions' => 3,
         'remote_work' => 4,
+        'free_work' => 5,
     ],
 
     'notifications_types' => [

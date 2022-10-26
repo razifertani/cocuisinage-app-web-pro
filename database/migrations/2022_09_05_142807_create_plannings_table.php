@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->date('day');
             $table->time('should_start_at');
-            $table->time('should_finish_at');
+            $table->time('should_finish_at')->nullable();
 
             $table->time('started_at')->nullable();
             $table->time('finished_at')->nullable();
