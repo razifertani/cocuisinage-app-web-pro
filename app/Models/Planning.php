@@ -62,7 +62,7 @@ class Planning extends Model
         ])->get();
 
         foreach ($plannings as $planning) {
-            if ($id != $planning->id) {
+            if ($id != $planning->id && $this->should_finish_at != null) {
                 if (
                     Carbon::createFromTimeString($this->should_start_at)->between(Carbon::createFromTimeString($planning->should_start_at), Carbon::createFromTimeString($planning->should_finish_at))
                     ||
