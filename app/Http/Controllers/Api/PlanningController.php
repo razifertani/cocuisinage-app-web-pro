@@ -42,6 +42,8 @@ class PlanningController extends Controller
                         'day' => Carbon::parse(request('day')),
                         'should_start_at' => request('should_start_at'),
                         'should_finish_at' => request('should_finish_at'),
+                        'started_at' => request('started_at'),
+                        'finished_at' => request('finished_at'),
                     ]);
                 }
             } else {
