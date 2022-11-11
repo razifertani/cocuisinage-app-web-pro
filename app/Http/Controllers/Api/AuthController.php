@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Planning;
 use App\Models\Professional;
 use App\Services\FCMService;
@@ -15,27 +16,14 @@ class AuthController extends Controller
 {
     public function test()
     {
-        $planning2 = Planning::create([
-            'professional_id' => 7,
-            'establishment_id' => 4,
-            'day' => '2022-10-13',
-            'should_start_at' => '14:00',
-            'should_finish_at' => '15:00',
-        ]);
-        $planning2 = Planning::create([
-            'professional_id' => 7,
-            'establishment_id' => 4,
-            'day' => '2022-10-15',
+        $planning4 = Planning::create([
+            'professional_id' => 2,
+            'establishment_id' => 1,
+            'day' => '2022-11-04',
             'should_start_at' => '10:00',
             'should_finish_at' => '12:00',
         ]);
-        $planning2 = Planning::create([
-            'professional_id' => 7,
-            'establishment_id' => 4,
-            'day' => '2022-10-15',
-            'should_start_at' => '19:00',
-            'should_finish_at' => '20:00',
-        ]);
+
         return true;
 
         return (new FCMService())->sendFCM(1, 2, 1, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');

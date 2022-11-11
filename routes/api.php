@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CollegueController;
+use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\EstablishmentController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\PlanningController;
@@ -96,10 +97,20 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/roles/{id}', [RoleController::class, 'delete']);
 
     /*
+     * Companies related routes
+     */
+
+    Route::post('/company/{id}', [CompanyController::class, 'update']);
+
+    /*
      * Establishments related routes
      */
 
     Route::post('/establishments', [EstablishmentController::class, 'store']);
+
+    Route::post('/establishment/{id}', [EstablishmentController::class, 'update']);
+
+    Route::delete('/establishment/{id}', [EstablishmentController::class, 'delete']);
 });
 
 Route::any('/{any}', function () {

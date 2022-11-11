@@ -44,4 +44,50 @@ class EstablishmentController extends Controller
             ], 500);
         }
     }
+
+    public function update($id)
+    {
+        try {
+            $establishment = Establishment::findOrFail($id);
+
+            $establishment->name = request('name');
+            $establishment->city = request('city');
+            $establishment->longitude = request('longitude');
+            $establishment->latitude = request('latitude');
+            $establishment->image_path = $this->upload_image(auth()->user()->id);
+
+            $establishment->save();
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Mise à jour effectuée avec succès !',
+            ], 200);
+
+        } catch (\Throwable$th) {
+            report($th);
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            Establishment::destroy($id);
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Boutique supprimée avec succès !',
+            ], 200);
+
+        } catch (\Throwable$th) {
+            report($th);
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }
