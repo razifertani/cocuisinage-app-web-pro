@@ -142,11 +142,11 @@ class AuthController extends Controller
             ]);
 
             $company = Company::create([
-                'name' => $name,
-                'email' => $email,
-                'phone_number' => $phone_number,
-                'rib' => $rib,
-                'siret' => $siret,
+                'name' => request('company_name'),
+                'email' => request('company_email'),
+                'phone_number' => request('company_phone_number'),
+                'rib' => request('company_rib'),
+                'siret' => request('company_siret'),
             ]);
 
             $professional = Professional::create([
