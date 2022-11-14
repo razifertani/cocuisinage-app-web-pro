@@ -16,6 +16,8 @@ class AuthController extends Controller
 {
     public function test()
     {
+        return (new FCMService())->sendFCM(1, 1, 2, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
+
         $planning4 = Planning::create([
             'professional_id' => 2,
             'establishment_id' => 1,
@@ -25,8 +27,6 @@ class AuthController extends Controller
         ]);
 
         return true;
-
-        return (new FCMService())->sendFCM(1, 2, 1, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
 
         Professional::findOrFail(6)->toggle_notification_type_active_param(1, 3);
         return true;

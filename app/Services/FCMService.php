@@ -18,6 +18,7 @@ class FCMService
     public function sendFCM($establishment_id, $sender_id, $receiver_id, $notification_type_id, $title, $body)
     {
         try {
+
             $sender = Professional::findOrFail($sender_id);
             $receiver = Professional::findOrFail($receiver_id);
 
@@ -59,6 +60,7 @@ class FCMService
             $response = $request->getBody();
             $json = json_decode($response, true);
 
+            logger($json);
             if ($json['success'] == 1) {
 
                 FCMNotification::create([
