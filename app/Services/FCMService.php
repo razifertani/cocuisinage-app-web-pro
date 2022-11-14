@@ -39,7 +39,6 @@ class FCMService
             }
 
             $serverKey = env('FIREBASE_SERVER_KEY');
-            logger($serverKey);
             $request = self::$client->request('POST', 'https://fcm.googleapis.com/fcm/send', [
                 'headers' => [
                     'Content-Type' => 'application/json',
@@ -61,7 +60,6 @@ class FCMService
             $response = $request->getBody();
             $json = json_decode($response, true);
 
-            logger($json);
             if ($json['success'] == 1) {
 
                 FCMNotification::create([
@@ -75,6 +73,7 @@ class FCMService
 
                 return true;
             } else {
+                logger($json);
                 throw new FCMCannotBeSent('Impossible d\'envoyer la notification');
             };
 
