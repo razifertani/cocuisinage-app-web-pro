@@ -16,7 +16,7 @@ class AuthController extends Controller
 {
     public function test()
     {
-        return (new FCMService())->sendFCM(1, 1, 2, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
+        return (new FCMService())->sendFCM(1, 2, 1, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
 
         $planning4 = Planning::create([
             'professional_id' => 2,
