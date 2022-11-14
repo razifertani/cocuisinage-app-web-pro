@@ -39,6 +39,7 @@ class FCMService
             }
 
             $serverKey = env('FIREBASE_SERVER_KEY');
+            logger($serverKey);
             $request = self::$client->request('POST', 'https://fcm.googleapis.com/fcm/send', [
                 'headers' => [
                     'Content-Type' => 'application/json',
