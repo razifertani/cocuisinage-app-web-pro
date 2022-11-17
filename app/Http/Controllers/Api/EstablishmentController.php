@@ -52,9 +52,11 @@ class EstablishmentController extends Controller
 
             $establishment->name = request('name');
             $establishment->city = request('city');
-            $establishment->longitude = request('longitude');
-            $establishment->latitude = request('latitude');
-            $establishment->image_path = $this->upload_image(auth()->user()->id);
+            // $establishment->longitude = request('longitude');
+            // $establishment->latitude = request('latitude');
+            if (request()->hasFile('image')) {
+                $establishment->image_path = $this->upload_image(auth()->user()->id);
+            }
 
             $establishment->save();
 
