@@ -25,7 +25,7 @@ class EstablishmentController extends Controller
                 'city' => request('city'),
                 'longitude' => request('longitude'),
                 'latitude' => request('latitude'),
-                'image_path' => $this->upload_image(auth()->user()->id),
+                'img' => $this->upload_image(auth()->user()->id),
             ]);
 
             auth()->user()->attach_role($establishment->id, config('cocuisinage.role_owner_id'));

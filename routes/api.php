@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\EstablishmentController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\PlanningController;
 use App\Http\Controllers\Api\ProfessionalController;
+use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TaskController;
 use Illuminate\Support\Facades\Route;
@@ -111,6 +112,17 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/establishment/{id}', [EstablishmentController::class, 'update']);
 
     Route::delete('/establishment/{id}', [EstablishmentController::class, 'delete']);
+
+    /*
+     * Reservations related routes
+     */
+
+    Route::post('/reservations', [ReservationController::class, 'store']);
+
+    Route::post('/reservation/{id}', [ReservationController::class, 'update']);
+
+    Route::delete('/reservation/{id}', [ReservationController::class, 'delete']);
+
 });
 
 Route::any('/{any}', function () {
