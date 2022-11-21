@@ -178,7 +178,7 @@
                                                             <td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
                                                                 <div style="font-family: Arial, sans-serif">
                                                                     <div class="" style="font-size: 12px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #555555; line-height: 1.2;">
-                                                                        <p style="margin: 0; font-size: 16px; text-align: center; mso-line-height-alt: 19.2px;"><span style="font-size:24px;color:#2b303a;"><strong><span style="color:#db475a;">Co</span>cuisinage mot de passe oublié ?</strong></span></p>
+                                                                        <p style="margin: 0; font-size: 16px; text-align: center; mso-line-height-alt: 19.2px;"><span style="font-size:24px;color:#2b303a;"><strong><span style="color:#db475a;">Co</span>cuisinage Invitation</strong></span></p>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -191,7 +191,7 @@
                                                                     <div class="" style="font-size: 12px; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif; mso-line-height-alt: 18px; color: #555555; line-height: 1.5;">
                                                                         <p style="margin: 0; font-size: 15px; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Bonjour {{ $employe_fullname }}</span></p>
                                                                         <p style="margin: 0; font-size: 15px; mso-line-height-alt: 18px;"> </p>
-                                                                        <p style="margin: 0; font-size: 15px; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Votre collaborateur {{ $owner_fullname }} vous a ajouter comme nouvel équipier. Veuillez cliquer sur le lien suivant pour finaliser votre inscription pour utiliser MonPlanningEquipe de cocuisinage.</span></p>
+                                                                        <p style="margin: 0; font-size: 15px; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Votre collaborateur {{ $owner_fullname }} vous a ajouté comme nouvel équipier. Veuillez cliquer sur le lien suivant pour finaliser votre inscription pour utiliser MonPlanningEquipe de cocuisinage.</span></p>
                                                                         {{-- <p style="margin: 0; font-size: 15px; mso-line-height-alt: 22.5px;"><strong><span style="font-size:15px;">Voici le code de réinitialisation.</span></strong><br /><br /></p> --}}
                                                                     </div>
                                                                 </div>
