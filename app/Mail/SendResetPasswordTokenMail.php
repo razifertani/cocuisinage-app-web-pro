@@ -30,7 +30,7 @@ class SendResetPasswordTokenMail extends Mailable
     public function build()
     {
         return $this->from(config('mail.from.address'), config('mail.from.name'))
-            ->subject('SendResetPasswordTokenMail')
+            ->subject('Réinitialiser votre mot de passe')
             ->view('emails.reset_password_email')
             ->with([
                 'token' => $this->token,
