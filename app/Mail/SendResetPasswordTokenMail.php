@@ -10,6 +10,7 @@ class SendResetPasswordTokenMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $fullname;
     public $token;
 
     /**
@@ -17,8 +18,9 @@ class SendResetPasswordTokenMail extends Mailable
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct($fullname, $token)
     {
+        $this->fullname = $fullname;
         $this->token = $token;
     }
 
@@ -33,6 +35,7 @@ class SendResetPasswordTokenMail extends Mailable
             ->subject('Réinitialiser votre mot de passe')
             ->view('emails.reset_password_email')
             ->with([
+                'fullname' => $this->fullname,
                 'token' => $this->token,
             ]);
     }

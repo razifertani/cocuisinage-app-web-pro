@@ -19,19 +19,32 @@ class ForgotPasswordController extends Controller
                 'email' => 'required|email|exists:professional',
             ]);
 
-            $token = rand(1000, 9999);
+            $professional = Professional::where('email', request('email'))->first();
 
-            DB::table('password_resets')->insert([
-                'email' => request('email'),
-                'token' => $token,
-            ]);
+            if ($professional) {
 
-            Mail::to(request('email'))->send(new SendResetPasswordTokenMail($token));
+                $token = rand(1000, 9999);
 
-            return response()->json([
-                'error' => false,
-                'message' => 'Lien envoyé, veuillez vérifier votre boite email !',
-            ], 200);
+                DB::table('password_resets')->insert([
+                    'email' => request('email'),
+                    'token' => $token,
+                ]);
+
+                Mail::to(request('email'))->send(new SendResetPasswordTokenMail($fullname, $token));
+
+                return response()->json([
+                    'error' => false,
+                    'message' => 'Code envoyé, veuillez vérifier votre boite mail !',
+                ], 200);
+
+            } else {
+
+                return response()->json([
+                    'error' => false,
+                    'message' => 'Email non trouvé !',
+                ], 200);
+
+            }
 
         } catch (\Throwable$th) {
             report($th);

@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\SendResetPasswordTokenMail;
 use App\Models\Company;
 use App\Models\Planning;
 use App\Models\Professional;
 use App\Services\FCMService;
 use Auth;
 use Hash;
-use Mail;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -18,7 +16,6 @@ class AuthController extends Controller
 {
     public function test()
     {
-        Mail::to('razifertani1@gmail.com')->send(new SendResetPasswordTokenMail(1234));
         return 1;
 
         return (new FCMService())->sendFCM(1, 2, 1, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');

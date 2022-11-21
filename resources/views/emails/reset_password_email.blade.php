@@ -146,8 +146,8 @@
                                                         <tr>
                                                             <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
                                                                 <div align="center" class="alignment" style="line-height:10px">
-                                                                    {{-- <img class="big" src="{{ asset('images/logo_offeciel_de_cocuisinage_software_png_.png') }}" style="display: block; height: auto; border: 0; width: 512px; max-width: 100%;" width="512" /> --}}
-                                                                    <img class="big" src="{{ $message->embed(asset('images/logo_offeciel_de_cocuisinage_software_png_.png')) }}"style="display: block; height: auto; border: 0; width: 512px; max-width: 100%;" width="512">
+                                                                    {{-- <img class="big" src="{{ public_path().'/images/logo_offeciel_de_cocuisinage_software_png_.png' }}" style="display: block; height: auto; border: 0; width: 512px; max-width: 100%;" width="512" /> --}}
+                                                                    <img class="big" src="{{ $message->embed(public_path() . '/images/logo_offeciel_de_cocuisinage_software_png_.png') }}"style="display: block; height: auto; border: 0; width: 512px; max-width: 100%;" width="512">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -155,8 +155,8 @@
                                                     <table border="0" cellpadding="0" cellspacing="0" class="image_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                                                         <tr>
                                                             <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
-                                                                <div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="Image of lock & key." class="big" src="{{ asset('images/___passwordreset.gif') }}" style="display: block; height: auto; border: 0; width: 640px; max-width: 100%;"
-                                                                            title="Image of lock & key." width="640" /></a></div>
+                                                                <div align="center" class="alignment" style="line-height:10px"><a href="www.example.com" style="outline:none" tabindex="-1" target="_blank"><img alt="Image of lock & key." class="big" src="{{ $message->embed(public_path() . '/images/___passwordreset.gif') }}"
+                                                                            style="display: block; height: auto; border: 0; width: 640px; max-width: 100%;" title="Image of lock & key." width="640" /></a></div>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -189,7 +189,7 @@
                                                             <td class="pad" style="padding-bottom:10px;padding-left:40px;padding-right:40px;padding-top:10px;">
                                                                 <div style="font-family: sans-serif">
                                                                     <div class="" style="font-size: 12px; font-family: Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif; mso-line-height-alt: 18px; color: #555555; line-height: 1.5;">
-                                                                        <p style="margin: 0; font-size: 15px; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Bonjour {prénom de la personne}</span></p>
+                                                                        <p style="margin: 0; font-size: 15px; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Bonjour {{ $fullname }}</span></p>
                                                                         <p style="margin: 0; font-size: 15px; mso-line-height-alt: 18px;"> </p>
                                                                         <p style="margin: 0; font-size: 15px; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Vous avez demandé un nouveau mot de passe.</span></p>
                                                                         <p style="margin: 0; font-size: 15px; mso-line-height-alt: 22.5px;"><strong><span style="font-size:15px;">Voici le code de réinitialisation.</span></strong><br /><br /></p>
@@ -206,7 +206,7 @@
                                                                         href="www.example.com"
                                                                         style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#db475a;border-radius:35px;width:auto;border-top:0px solid transparent;font-weight:700;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:10px;padding-bottom:10px;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:23px;text-align:center;mso-border-alt:none;word-break:keep-all;"
                                                                         target="_blank"><span style="padding-left:50px;padding-right:50px;font-size:23px;display:inline-block;letter-spacing:normal;"><span dir="ltr" style="margin: 0; word-break: break-word; line-height: 46px;"><strong>
-                                                                                    {{ $token ?? 0000 }}
+                                                                                    {{ $token }}
                                                                                 </strong></span></span></a>
                                                                     <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
                                                                 </div>
@@ -225,7 +225,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0" class="image_block block-8" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                                                         <tr>
                                                             <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
-                                                                <div align="center" class="alignment" style="line-height:10px"><img class="big" src="{{ asset('images/Mon_planning_equipe_1.png') }}" style="display: block; height: auto; border: 0; width: 416px; max-width: 100%;" width="416" /></div>
+                                                                <div align="center" class="alignment" style="line-height:10px"><img class="big" src="{{ $message->embed(public_path() . '/images/Mon_planning_equipe_1.png') }}" style="display: block; height: auto; border: 0; width: 416px; max-width: 100%;" width="416" /></div>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -274,15 +274,17 @@
                                                     <table border="0" cellpadding="0" cellspacing="0" class="image_block block-2" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                                                         <tr>
                                                             <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;padding-top:5px;">
-                                                                <div align="center" class="alignment" style="line-height:10px"><a href="https://play.google.com/store/apps/details?id=com.cocuisinage.professionnel" style="outline:none" tabindex="-1" target="_blank"><img src="{{ asset('images/playsotre.svg') }}" style="display: block; height: auto; border: 0; width: 128px; max-width: 100%;"
-                                                                            width="128" /></a></div>
+                                                                <div align="center" class="alignment" style="line-height:10px"><a href="https://play.google.com/store/apps/details?id=com.cocuisinage.professionnel" style="outline:none" tabindex="-1" target="_blank"><img src="{{ $message->embed(public_path() . '/images/playsotre.png') }}"
+                                                                            style="display: block; height: auto; border: 0; width: 128px; max-width: 100%;" width="128" /></a></div>
                                                             </td>
                                                         </tr>
                                                     </table>
                                                     <table border="0" cellpadding="0" cellspacing="0" class="image_block block-3" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;" width="100%">
                                                         <tr>
                                                             <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;padding-bottom:5px;">
-                                                                <div align="center" class="alignment" style="line-height:10px"><a href="https://testflight.apple.com/join/z5QXctYG" style="outline:none" tabindex="-1" target="_blank"><img src="{{ asset('images/appsotre.svg') }}" style="display: block; height: auto; border: 0; width: 128px; max-width: 100%;" width="128" /></a></div>
+                                                                <div align="center" class="alignment" style="line-height:10px"><a href="https://testflight.apple.com/join/z5QXctYG" style="outline:none" tabindex="-1" target="_blank"><img src="{{ $message->embed(public_path() . '/images/appsotre.png') }}" style="display: block; height: auto; border: 0; width: 128px; max-width: 100%;"
+                                                                            width="128" /></a>
+                                                                </div>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -308,10 +310,10 @@
                                                                 <div align="center" class="alignment">
                                                                     <table border="0" cellpadding="0" cellspacing="0" class="social-table" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;" width="144px">
                                                                         <tr>
-                                                                            <td style="padding:0 2px 0 2px;"><a href="https://www.facebook.com/cocuisinage" target="_blank"><img alt="Facebook" height="32" src="{{ asset('images/facebook2x.png') }}" style="display: block; height: auto; border: 0;" title="Facebook" width="32" /></a></td>
-                                                                            <td style="padding:0 2px 0 2px;"><a href="https://twitter.com/cocuisinage" target="_blank"><img alt="Twitter" height="32" src="{{ asset('images/twitter2x.png') }}" style="display: block; height: auto; border: 0;" title="Twitter" width="32" /></a></td>
-                                                                            <td style="padding:0 2px 0 2px;"><a href="https://instagram.com/cocuisinage" target="_blank"><img alt="Instagram" height="32" src="{{ asset('images/instagram2x.png') }}" style="display: block; height: auto; border: 0;" title="Instagram" width="32" /></a></td>
-                                                                            <td style="padding:0 2px 0 2px;"><a href="https://www.linkedin.com/company/co-cuisinage" target="_blank"><img alt="LinkedIn" height="32" src="{{ asset('images/linkedin2x.png') }}" style="display: block; height: auto; border: 0;" title="LinkedIn" width="32" /></a></td>
+                                                                            <td style="padding:0 2px 0 2px;"><a href="https://www.facebook.com/cocuisinage" target="_blank"><img alt="Facebook" height="32" src="{{ $message->embed(public_path() . '/images/facebook2x.png') }}" style="display: block; height: auto; border: 0;" title="Facebook" width="32" /></a></td>
+                                                                            <td style="padding:0 2px 0 2px;"><a href="https://twitter.com/cocuisinage" target="_blank"><img alt="Twitter" height="32" src="{{ $message->embed(public_path() . '/images/twitter2x.png') }}" style="display: block; height: auto; border: 0;" title="Twitter" width="32" /></a></td>
+                                                                            <td style="padding:0 2px 0 2px;"><a href="https://instagram.com/cocuisinage" target="_blank"><img alt="Instagram" height="32" src="{{ $message->embed(public_path() . '/images/instagram2x.png') }}" style="display: block; height: auto; border: 0;" title="Instagram" width="32" /></a></td>
+                                                                            <td style="padding:0 2px 0 2px;"><a href="https://www.linkedin.com/company/co-cuisinage" target="_blank"><img alt="LinkedIn" height="32" src="{{ $message->embed(public_path() . '/images/linkedin2x.png') }}" style="display: block; height: auto; border: 0;" title="LinkedIn" width="32" /></a></td>
                                                                         </tr>
                                                                     </table>
                                                                 </div>
