@@ -10,6 +10,8 @@ class SendInvitationLinkMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $owner_fullname;
+    public $employe_fullname;
     public $url;
 
     /**
@@ -17,8 +19,10 @@ class SendInvitationLinkMail extends Mailable
      *
      * @return void
      */
-    public function __construct($url)
+    public function __construct($owner_fullname, $employe_fullname, $url)
     {
+        $this->owner_fullname = $owner_fullname;
+        $this->employe_fullname = $employe_fullname;
         $this->url = $url;
     }
 
@@ -30,9 +34,11 @@ class SendInvitationLinkMail extends Mailable
     public function build()
     {
         return $this->from(config('mail.from.address'), config('mail.from.name'))
-            ->subject('SendInvitationLinkMail')
+            ->subject('Invitation pour accéder à votre planning de travail')
             ->view('emails.invitation_email')
             ->with([
+                'owner_fullname' => $this->owner_fullname,
+                'employe_fullname' => $this->employe_fullname,
                 'url' => $this->url,
             ]);
 

@@ -53,7 +53,11 @@ class CollegueController extends Controller
             );
 
             $url = url('/api/collegue/accept_invitation') . '/' . $url_token;
-            Mail::to(request('email'))->send(new SendInvitationLinkMail($url));
+
+            $employe_fullname = request('first_name') . ' ' . request('last_name');
+            $owner_fullname = Establishment::findOrFail(request('establishment_id'))->owner()->fullname;
+
+            Mail::to(request('email'))->send(new SendInvitationLinkMail($owner_fullname, $employe_fullname, $url));
 
             return response()->json([
                 'error' => false,
