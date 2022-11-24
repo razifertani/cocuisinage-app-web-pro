@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('professional', function (Blueprint $table) {
-            $table->boolean('is_owner')->after('company_id');
+            $table->boolean('is_owner')->default(0)->after('company_id');
         });
 
     }

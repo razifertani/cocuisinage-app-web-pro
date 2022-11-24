@@ -65,4 +65,9 @@ class Establishment extends Model
         return $this->professionals()->wherePivot('role_id', config('cocuisinage.role_owner_id'))->first();
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
 }
