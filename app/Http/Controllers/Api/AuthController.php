@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\Establishment;
+use App\Models\NotificationType;
 use App\Models\Planning;
 use App\Models\Professional;
 use App\Services\FCMService;
@@ -16,7 +18,19 @@ class AuthController extends Controller
 {
     public function test()
     {
-        return 1;
+
+        $establishments = Establishment::whereDoesntHave('professionals')->get();
+
+        $professional = Professional::findOrFail(12);
+
+        foreach ($establishments as $establishment) {
+
+            $professional->attach_role($establishment->id, config('cocuisinage.role_owner_id'));
+            $professional->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment->id, 'active' => 1]);
+
+        }
+
+        return Establishment::whereDoesntHave('professionals')->get();
 
         return (new FCMService())->sendFCM(1, 2, 1, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
 

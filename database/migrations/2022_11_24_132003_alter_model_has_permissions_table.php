@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('professional_permissions_in_establishment', function (Blueprint $table) {
-            $table->string('model_type');
+            $table->string('model_type')->nullable();
         });
     }
 
