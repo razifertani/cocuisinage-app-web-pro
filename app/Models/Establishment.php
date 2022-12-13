@@ -70,4 +70,8 @@ class Establishment extends Model
         return $this->hasMany(Reservation::class);
     }
 
+    public function tables()
+    {
+        return $this->hasMany(Table::class);
+    }
 }

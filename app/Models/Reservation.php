@@ -17,4 +17,14 @@ class Reservation extends Model
         'hour',
         'comment',
     ];
+
+    public function establishment()
+    {
+        return $this->belongsTo(Establishment::class);
+    }
+
+    public function table()
+    {
+        return $this->belongsTo(Table::class);
+    }
 }
