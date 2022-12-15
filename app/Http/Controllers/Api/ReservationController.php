@@ -11,14 +11,13 @@ class ReservationController extends Controller
     public function store()
     {
         try {
-            logger(request('day'));
             request()->validate([
                 'establishment_id' => 'required',
 
                 'client_name' => 'required',
                 'client_phone_number' => 'required',
                 'nb_people' => 'required',
-                'day' => 'required|after_or_equal:now',
+                'day' => 'required|after:yesterday',
                 'hour' => 'required',
             ]);
 
@@ -77,8 +76,15 @@ class ReservationController extends Controller
     public function assign_table_to_reservation($id, $table_id)
     {
         try {
-            $reservation = Reservation::findOrFail($id);
+            $reservation = Reservation::with('table')->findOrFail($id);
             $table = Table::findOrFail($table_id);
+
+            if ($reservation->table_id != null) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Reservation already assigned to ' . $reservation->table->name . ' !',
+                ], 200);
+            }
 
             if ($table->is_free_for_day_and_hour(request('day'), request('hour'))) {
                 $reservation->table_id = $table_id;
