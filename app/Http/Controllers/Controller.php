@@ -16,7 +16,7 @@ class Controller extends BaseController
     {
         try {
             request()->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'image' => 'required|mimes:jpeg,png,jpg,gif,svg,pdf|max:2048',
             ]);
 
             $imageName = request('image')->hashName();
