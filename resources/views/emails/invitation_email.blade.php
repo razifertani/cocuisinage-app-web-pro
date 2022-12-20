@@ -206,7 +206,7 @@
                                                                         href="{{ $url }}"
                                                                         style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#db475a;border-radius:35px;width:auto;border-top:0px solid transparent;font-weight:700;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:10px;padding-bottom:10px;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-size:23px;text-align:center;mso-border-alt:none;word-break:keep-all;"
                                                                         target="_blank"><span style="padding-left:50px;padding-right:50px;font-size:23px;display:inline-block;letter-spacing:normal;"><span dir="ltr" style="margin: 0; word-break: break-word; line-height: 46px;"><strong>
-                                                                                    Finaliser mon inscription
+                                                                                    {{ $url }}
                                                                                 </strong></span></span></a>
                                                                     <!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
                                                                 </div>
@@ -217,7 +217,7 @@
                                                         <tr>
                                                             <td class="pad">
                                                                 <div style="color:#555555;font-size:14px;font-family:Montserrat, Trebuchet MS, Lucida Grande, Lucida Sans Unicode, Lucida Sans, Tahoma, sans-serif;font-weight:400;line-height:120%;text-align:left;direction:ltr;letter-spacing:0px;mso-line-height-alt:16.8px;">
-                                                                    <p style="margin: 0;">Ajoutez le sur l'application cocuisinage et créer un nouveau mot de passe.</p>
+                                                                    <p style="margin: 0;">Ajoutez le sur l'application Mon Planning Equipe et créer un nouveau mot de passe.</p>
                                                                 </div>
                                                             </td>
                                                         </tr>

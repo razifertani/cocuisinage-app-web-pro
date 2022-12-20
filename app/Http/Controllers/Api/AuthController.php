@@ -5,10 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Establishment;
-use App\Models\NotificationType;
-use App\Models\Planning;
 use App\Models\Professional;
-use App\Services\FCMService;
 use Auth;
 use Hash;
 use Spatie\Permission\Models\Permission;
@@ -19,73 +16,7 @@ class AuthController extends Controller
     public function test()
     {
 
-        $establishments = Establishment::whereDoesntHave('professionals')->get();
-
-        $professional = Professional::findOrFail(12);
-
-        foreach ($establishments as $establishment) {
-
-            $professional->attach_role($establishment->id, config('cocuisinage.role_owner_id'));
-            $professional->notifications_params()->attach(NotificationType::all(), ['establishment_id' => $establishment->id, 'active' => 1]);
-
-        }
-
-        return Establishment::whereDoesntHave('professionals')->get();
-
-        return (new FCMService())->sendFCM(1, 2, 1, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
-
-        $planning4 = Planning::create([
-            'professional_id' => 2,
-            'establishment_id' => 1,
-            'day' => '2022-11-04',
-            'should_start_at' => '10:00',
-            'should_finish_at' => '12:00',
-        ]);
-
-        return true;
-
-        Professional::findOrFail(6)->toggle_notification_type_active_param(1, 3);
-        return true;
-
-        return config('cocuisinage.notifications_types.planning');
-
-        return Professional::findOrFail(1)
-            ->establishments_permissions()
-            ->where('establishment_id', 1)
-            ->where('permission_id', 2)
-            ->count() > 0;
-
-        // return Professional::findOrFail(1)->establishments_permissions()
-        //     ->where('establishment_id', 1) // request('establishment_id')
-        //     ->where('permission_id', 3) // config('cocuisinage.permissions_ids.manage_permissions')
-        //     ->count();
-
-        return (new FCMService())->sendFCM(1, 1, 6, config('cocuisinage.notifications_types.planning'), 'Tâche accordée', 'Une nouvelle tâche vous a été accordée');
-
-        $professional = Professional::firstOrCreate(
-            [
-                'email' => 'hamedemploye@gmail.com',
-            ],
-            [
-                'first_name' => 'Hamed',
-                'last_name' => 'Employe',
-                'email' => 'hamedemploye@gmail.com',
-                'password' => Hash::make('123456'),
-                'company_id' => 1,
-            ]
-        );
-        $professional->establishments_roles()->attach(
-            5,
-            [
-                'role_id' => 3,
-            ],
-        );
-        $professional->permissions()->attach(
-            Role::findOrFail(3)->permissions,
-            [
-                'establishment_id' => 5,
-            ],
-        );
+        return Establishment::with('reservations.table')->with('tables.reservations')->get();
 
     }
 

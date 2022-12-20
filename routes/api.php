@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PlanningController;
 use App\Http\Controllers\Api\ProfessionalController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\TableController;
 use App\Http\Controllers\Api\TaskController;
 use Illuminate\Support\Facades\Route;
 
@@ -121,7 +122,19 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/reservation/{id}', [ReservationController::class, 'update']);
 
+    Route::post('/reservation/{id}/assign_table_to_reservation/{table_id}', [ReservationController::class, 'assign_table_to_reservation']);
+
     Route::delete('/reservation/{id}', [ReservationController::class, 'delete']);
+
+    /*
+     * Tables related routes
+     */
+
+    Route::post('/tables', [TableController::class, 'store']);
+
+    Route::post('/table/{id}', [TableController::class, 'update']);
+
+    Route::delete('/table/{id}', [TableController::class, 'delete']);
 
 });
 

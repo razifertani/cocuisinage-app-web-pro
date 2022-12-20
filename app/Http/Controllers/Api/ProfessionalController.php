@@ -13,6 +13,7 @@ class ProfessionalController extends Controller
     {
         try {
             $user = request()->user();
+
             $user->load([
                 'establishments_roles',
                 'establishments_permissions',
@@ -28,8 +29,9 @@ class ProfessionalController extends Controller
                 'notifications_params',
                 'notifications_as_sender',
                 'notifications_as_receiver',
-                // 'company.establishments.plannings',
-                // 'roles.permissions'
+
+                'company.establishments.reservations.table',
+                'company.establishments.tables.reservations',
             ]);
 
             return response()->json([
