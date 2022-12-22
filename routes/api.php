@@ -56,6 +56,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/user/{id}/toggle_notification_type_active_param', [ProfessionalController::class, 'toggle_notification_type_active_param']);
 
+    Route::delete('/user/{id}', [ProfessionalController::class, 'delete']);
+
     /*
      * Collegue related routes
      */

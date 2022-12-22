@@ -76,7 +76,7 @@ class TaskController extends Controller
             $task->comment = request('comment') ?? $task->comment;
 
             if (request()->hasFile('image')) {
-                $task->image = $this->upload_image(auth()->user()->id);
+                $task->image = $this->upload_image($professional->id);
             }
 
             $task->save();

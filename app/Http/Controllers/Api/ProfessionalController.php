@@ -118,6 +118,25 @@ class ProfessionalController extends Controller
         }
     }
 
+    public function delete($id)
+    {
+        try {
+            Professional::destroy($id);
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Professionnel supprimé avec succès !',
+            ], 200);
+
+        } catch (\Throwable$th) {
+            report($th);
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
     public function toggle_notification_type_active_param($id)
     {
         try {
