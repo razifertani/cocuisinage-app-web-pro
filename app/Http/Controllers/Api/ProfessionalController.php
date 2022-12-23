@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invitation;
 use App\Models\Professional;
 use Hash;
 use Illuminate\Validation\Rule;
@@ -121,7 +122,10 @@ class ProfessionalController extends Controller
     public function delete($id)
     {
         try {
-            Professional::destroy($id);
+
+            $professional = Professional::findOrFail($id);
+            Invitation::where('email', $professional->email)->destroy($id);
+            $professional->delete();
 
             return response()->json([
                 'error' => false,
