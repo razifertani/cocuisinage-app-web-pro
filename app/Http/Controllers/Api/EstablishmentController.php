@@ -74,6 +74,29 @@ class EstablishmentController extends Controller
         }
     }
 
+    public function booking_duration($id, $booking_duration)
+    {
+        try {
+            $establishment = Establishment::findOrFail($id);
+
+            $establishment->booking_duration = $booking_duration;
+
+            $establishment->save();
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Mise à jour effectuée avec succès !',
+            ], 200);
+
+        } catch (\Throwable$th) {
+            report($th);
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
     public function delete($id)
     {
         try {

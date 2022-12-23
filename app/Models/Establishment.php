@@ -16,6 +16,7 @@ class Establishment extends Model
         'longitude',
         'latitude',
         'img',
+        'booking_duration',
     ];
 
     protected $appends = [

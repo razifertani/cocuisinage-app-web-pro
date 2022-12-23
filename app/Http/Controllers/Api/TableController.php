@@ -26,7 +26,7 @@ class TableController extends Controller
 
             return response()->json([
                 'error' => false,
-                'message' => 'Reservation créée avec succès !',
+                'message' => 'Réservation créée avec succès !',
             ], 200);
 
         } catch (\Throwable$th) {

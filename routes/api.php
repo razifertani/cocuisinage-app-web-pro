@@ -114,6 +114,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/establishment/{id}', [EstablishmentController::class, 'update']);
 
+    Route::post('/establishment/{id}/booking_duration/{booking_duration}', [EstablishmentController::class, 'booking_duration']);
+
     Route::delete('/establishment/{id}', [EstablishmentController::class, 'delete']);
 
     /*
