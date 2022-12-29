@@ -124,7 +124,7 @@ class EstablishmentController extends Controller
             if (request('part') == '1') {
                 $establishment->schedules()->where('day', request('day'))->update([
                     'begin' => request('begin'),
-                    'end' => request('end'),
+                    'ending' => request('ending'),
                 ]);
 
             } else if (request('part') == '2') {
