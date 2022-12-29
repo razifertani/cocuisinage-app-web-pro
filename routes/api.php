@@ -114,9 +114,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/establishment/{id}', [EstablishmentController::class, 'update']);
 
-    Route::post('/establishment/{id}/booking_duration/{booking_duration}', [EstablishmentController::class, 'booking_duration']);
+    Route::post('/establishment/{id}/update_booking_duration/{booking_duration}', [EstablishmentController::class, 'update_booking_duration']);
 
     Route::delete('/establishment/{id}', [EstablishmentController::class, 'delete']);
+
+    Route::post('/establishment/{id}/update_schedule', [EstablishmentController::class, 'update_schedule']);
 
     /*
      * Reservations related routes

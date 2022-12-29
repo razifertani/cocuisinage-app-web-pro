@@ -74,7 +74,7 @@ class EstablishmentController extends Controller
         }
     }
 
-    public function booking_duration($id, $booking_duration)
+    public function update_booking_duration($id, $booking_duration)
     {
         try {
             $establishment = Establishment::findOrFail($id);
@@ -115,4 +115,38 @@ class EstablishmentController extends Controller
             ], 500);
         }
     }
+
+    public function update_schedule($id)
+    {
+        try {
+            $establishment = Establishment::with('schedules')->findOrFail($id);
+
+            if (request('part') == 1) {
+                $establishment->schedules()->where('day', request('day'))->update([
+                    'begin' => request('begin'),
+                    'end' => request('end'),
+                ]);
+
+            } else if (request('part') == 2) {
+                $establishment->schedules()->where('day', request('day'))->update([
+                    'second_begin' => request('second_begin'),
+                    'second_end' => request('second_end'),
+                ]);
+
+            }
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Mise à jour effectuée avec succès !',
+            ], 200);
+
+        } catch (\Throwable$th) {
+            report($th);
+            return response()->json([
+                'error' => true,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
 }
