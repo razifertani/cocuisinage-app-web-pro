@@ -121,13 +121,13 @@ class EstablishmentController extends Controller
         try {
             $establishment = Establishment::with('schedules')->findOrFail($id);
 
-            if (request('part') == 1) {
+            if (request('part') == '1') {
                 $establishment->schedules()->where('day', request('day'))->update([
                     'begin' => request('begin'),
                     'end' => request('end'),
                 ]);
 
-            } else if (request('part') == 2) {
+            } else if (request('part') == '2') {
                 $establishment->schedules()->where('day', request('day'))->update([
                     'second_begin' => request('second_begin'),
                     'second_end' => request('second_end'),
