@@ -75,4 +75,9 @@ class Establishment extends Model
     {
         return $this->hasMany(Table::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(EstablishmentSchedule::class);
+    }
 }

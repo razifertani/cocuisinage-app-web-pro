@@ -32,11 +32,14 @@ class Table extends Model
             ['day', $day],
         ])->get();
 
+        $establishment = Establishment::findOrFail($this->establishment_id);
+        logger($this->establishment_id);
+
         foreach ($reservations as $reservation) {
             if (!(
-                Carbon::createFromTimeString($hour)->isAfter((Carbon::createFromTimeString($reservation->hour))->addHour())
+                Carbon::createFromTimeString($hour)->isAfter((Carbon::createFromTimeString($reservation->hour))->addMinutes($establishment->booking_duration))
                 ||
-                Carbon::createFromTimeString($hour)->addHour()->isBefore(Carbon::createFromTimeString($reservation->hour))
+                Carbon::createFromTimeString($hour)->addMinutes($establishment->booking_duration)->isBefore(Carbon::createFromTimeString($reservation->hour))
             )) {
                 return false;
             }

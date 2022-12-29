@@ -76,23 +76,24 @@ class ReservationController extends Controller
     public function assign_table_to_reservation($id, $table_id)
     {
         try {
+
             $reservation = Reservation::with('table')->findOrFail($id);
             $table = Table::findOrFail($table_id);
 
             if ($reservation->table_id != null) {
                 return response()->json([
                     'error' => true,
-                    'message' => 'Reservation already assigned to ' . $reservation->table->name . ' !',
+                    'message' => 'Réservation déjà assigné à la table ' . $reservation->table->name . ' !',
                 ], 200);
             }
 
-            if ($table->is_free_for_day_and_hour(request('day'), request('hour'))) {
+            if ($table->is_free_for_day_and_hour($reservation->day, $reservation->hour)) {
                 $reservation->table_id = $table_id;
                 $reservation->save();
             } else {
                 return response()->json([
                     'error' => true,
-                    'message' => 'Table is not free at ' . request('hour') . ' !',
+                    'message' => 'Table n\'est pas libre à ' . $reservation->hour . ' !',
                 ], 200);
             }
 

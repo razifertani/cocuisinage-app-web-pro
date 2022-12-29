@@ -22,6 +22,7 @@ class ProfessionalController extends Controller
                 'company.establishments.professionals.establishments_permissions',
                 'company.establishments.roles',
                 'company.establishments.reservations',
+                'company.establishments.schedules',
 
                 'plannings.tasks',
                 'company.establishments.professionals.plannings.tasks',
