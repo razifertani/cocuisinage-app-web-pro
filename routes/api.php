@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CollegueController;
+use App\Http\Controllers\Api\CommandeController;
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\EstablishmentController;
 use App\Http\Controllers\Api\ForgotPasswordController;
@@ -141,6 +142,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/table/{id}', [TableController::class, 'update']);
 
     Route::delete('/table/{id}', [TableController::class, 'delete']);
+
+    /*
+     * Commandes related routes
+     */
+
+    Route::post('/commandes/{id}', [CommandeController::class, 'index']);
+
+    Route::post('/commande/{id}/{commandeId}', [CommandeController::class, 'update']);
+
+    Route::post('/commande/{id}/{commandeId}', [CommandeController::class, 'updateStatus']);
 
 });
 

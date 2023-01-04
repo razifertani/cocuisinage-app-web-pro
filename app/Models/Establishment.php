@@ -28,7 +28,7 @@ class Establishment extends Model
         try {
             if ($this->img != null) {
                 $link = Storage::cloud()->temporaryUrl(
-                    'professionals/' . $this->owner()->id . '/' . $this->img,
+                    'professionals/' . $this->owner()?->id . '/' . $this->img,
                     now()->addMinutes(30),
                 );
                 return $link;
@@ -79,5 +79,10 @@ class Establishment extends Model
     public function schedules()
     {
         return $this->hasMany(EstablishmentSchedule::class);
+    }
+
+    public function commandes()
+    {
+        return $this->hasMany(Commande::class);
     }
 }
