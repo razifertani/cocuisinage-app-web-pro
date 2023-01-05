@@ -23,7 +23,7 @@ class ProfessionalController extends Controller
                 'company.establishments.roles',
                 'company.establishments.reservations',
                 'company.establishments.schedules',
-                'company.establishments.commandes.commandeProduct',
+                'company.establishments.commandes.commandeProduct.establishmentProduct',
 
                 'plannings.tasks',
                 'company.establishments.professionals.plannings.tasks',
