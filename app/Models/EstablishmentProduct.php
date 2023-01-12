@@ -10,7 +10,6 @@ class EstablishmentProduct extends Model
 
     protected $table = 'establishment_product';
 
-
     protected $fillable = [
         'establishment_id',
         'product_id',
@@ -25,17 +24,15 @@ class EstablishmentProduct extends Model
         'dlc',
         'stock_quantity',
         'img',
-        'show_home'
+        'show_home',
     ];
-    protected $appends = ['image_url' ];
+    protected $appends = ['image_url'];
 
     public function getImageUrlAttribute()
     {
-
-
         if ($this->img != null) {
 
-            return  Storage::disk('s3')->temporaryUrl(
+            return Storage::disk('s3')->temporaryUrl(
                 "establissement/$this->establishment_id/product/$this->img",
                 now()->addWeek(1)
             );
@@ -46,15 +43,15 @@ class EstablishmentProduct extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class , 'product_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
     public function establishment()
     {
-        return $this->belongsTo(Establishment::class , 'establishment_id');
+        return $this->belongsTo(Establishment::class, 'establishment_id');
     }
     public function ingrediants()
     {
-        return $this->hasMany(EstablishmentProduct::class , 'establishment_product_recette_id');
+        return $this->hasMany(EstablishmentProduct::class, 'establishment_product_recette_id');
     }
 
     public function likesUsers()
@@ -62,4 +59,3 @@ class EstablishmentProduct extends Model
         return $this->belongsToMany(User::class, 'user_establishmentproduct_likes')->withTimestamps();
     }
 }
-
