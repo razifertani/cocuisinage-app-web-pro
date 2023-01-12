@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Commande;
+use App\Models\CommandProduct;
 use App\Models\Establishment;
 
 class CommandeController extends Controller
