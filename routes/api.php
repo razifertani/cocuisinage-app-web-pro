@@ -149,8 +149,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/commandes/{id}', [CommandeController::class, 'index']);
 
-    Route::post('/commande/{id}/{commandeId}', [CommandeController::class, 'update']);
-
     Route::post('/commande/{id}/{commandeId}', [CommandeController::class, 'updateStatus']);
 
     Route::post('/commande/{id}/updateProductStatus/{commandeProductId}', [CommandeController::class, 'updateProductStatus']);
