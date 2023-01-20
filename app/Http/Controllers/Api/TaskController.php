@@ -65,10 +65,11 @@ class TaskController extends Controller
                 'establishment_id' => 'required',
             ]);
 
-            if (request('status') == -1) {
-                $professional = Professional::findOrFail(request('professional_id'));
-                // Mail::to($professional->email)->send(new SendToOwnerDeniedTaskMail("Message"));
-            }
+            $professional = Professional::findOrFail(request('professional_id'));
+
+            // if (request('status') == -1) {
+            //     Mail::to($professional->email)->send(new SendToOwnerDeniedTaskMail("Message"));
+            // }
 
             $task = Task::findOrFail($id);
 
